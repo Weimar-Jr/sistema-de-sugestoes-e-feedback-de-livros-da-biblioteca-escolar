@@ -13,17 +13,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Getter @NotBlank @Column(unique = true)
+    @NotBlank @Column(unique = true)
     private String registroDeAluno;
-    @Getter @Setter @NotBlank
+    @NotBlank
     private String nome;
-    @Getter @Setter @NotBlank @Column(unique = true)
+    @NotBlank @Column(unique = true)
     private String email;
-    @Getter @Setter @NotBlank
+    @NotBlank
     private String senha;
 
     @OneToMany(mappedBy = "aluno")

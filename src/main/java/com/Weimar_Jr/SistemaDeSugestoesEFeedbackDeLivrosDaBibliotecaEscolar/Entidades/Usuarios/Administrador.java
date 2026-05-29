@@ -15,6 +15,7 @@ import lombok.Setter;
 public class Administrador {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
         @NotBlank
         private String nome;
         @NotBlank

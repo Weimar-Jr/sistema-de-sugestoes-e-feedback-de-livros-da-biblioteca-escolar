@@ -10,11 +10,6 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring", uses = {LivroMapper.class, FeedbackMapper.class})
 public interface AlunoMapper {
-
-
-    @Mapping( target = "id", ignore = true)
-    @Mapping( target = "livroEmprestado", ignore = true)
-    @Mapping( target = "feedbacks", ignore = true)
     AlunoDTOResponse toAlunoDTOResponse(Aluno aluno);
     @Mapping( target = "registroDeAluno", ignore = true)
     @Mapping( target = "id", ignore = true)
