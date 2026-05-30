@@ -2,6 +2,8 @@ package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Ent
 
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Usuarios.Administrador;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Administrador.AdministradorDTOResponse;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Administrador.AtualizarAdministradorDTORequest;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Administrador.CriarUsuarioAdministradorDTORequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -9,6 +11,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AdministradorMapper {
     AdministradorDTOResponse toAdministradorDTOResponse(Administrador administrador);
-    Administrador toAdministrador(AdministradorDTOResponse administradorDTOResponse);
-    void toAdministradorAtualizar(AdministradorDTOResponse administradorDTOResponse, @MappingTarget Administrador administrador);
+    Administrador toAdministrador(CriarUsuarioAdministradorDTORequest criarAdministradorDTO);
+    void toAdministradorAtualizar(AtualizarAdministradorDTORequest atualizarAdministradorDTO, @MappingTarget Administrador administrador);
 }

@@ -1,6 +1,7 @@
 package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper;
 
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Biblioteca.Feedback;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.AtualizarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.CriarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
 import org.mapstruct.Mapper;
@@ -11,6 +12,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface FeedbackMapper {
     FeedbackDTOResponse toFeedbackDTOResponse(Feedback feedback);
     Feedback toFeedback(CriarFeedbackDTORequest criarFeedbackDTO);
-    void toFeedbackAtualizar(FeedbackDTOResponse feedbackDTOResponse, @MappingTarget Feedback feedback);
+    void toFeedbackAtualizar(AtualizarFeedbackDTORequest atualizarFeedbackDTO, @MappingTarget Feedback feedback);
 
 }

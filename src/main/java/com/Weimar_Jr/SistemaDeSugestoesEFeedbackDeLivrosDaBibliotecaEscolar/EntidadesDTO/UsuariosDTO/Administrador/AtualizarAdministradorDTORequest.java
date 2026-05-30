@@ -2,9 +2,8 @@ package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Ent
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
-public record AtualizarAdministradorDTOResquest(
+public record AtualizarAdministradorDTORequest(
         @NotBlank @JsonProperty("nome_administrador")
         String nome,
         @NotBlank @JsonProperty("email_administrador")
