@@ -7,14 +7,11 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring", uses = {LivroMapper.class, FeedbackMapper.class})
+@Mapper(componentModel = "spring", uses = {LivroMapper.class, FeedbackMapper.class}, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AlunoMapper {
     AlunoDTOResponse toAlunoDTOResponse(Aluno aluno);
-    @Mapping( target = "registroDeAluno", ignore = true)
-    @Mapping( target = "id", ignore = true)
-    @Mapping( target = "feedbacks", ignore = true)
-    @Mapping( target = "livroEmprestado", ignore = true)
     void toAlunoAtualizar(AtualizarAlunoDTORequest atualizarAlunoDTO, @MappingTarget Aluno aluno);
     Aluno toAluno(CriarUsuarioAlunoDTORequest criarAlunoDTO);
 }

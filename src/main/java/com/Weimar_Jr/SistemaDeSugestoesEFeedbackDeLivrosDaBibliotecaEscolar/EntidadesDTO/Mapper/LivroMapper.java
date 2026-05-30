@@ -4,18 +4,12 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AdicionarLivroDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AtualizarLivroDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.LivroDTOResponse;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", uses = {AlunoMapper.class, FeedbackMapper.class})
+@Mapper(componentModel = "spring", uses = {AlunoMapper.class, FeedbackMapper.class}, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface LivroMapper {
     LivroDTOResponse toLivroDTOResponse(Livro livro);
-    @Mapping( target = "id", ignore = true)
-    @Mapping( target = "alunoEmprestado", ignore = true)
-    @Mapping( target = "feedbacks", ignore = true) Livro toLivro(AdicionarLivroDTORequest criarLivroDTO);
-    @Mapping( target = "id", ignore = true)
-    @Mapping( target = "aluno", ignore = true)
-    @Mapping( target = "feedbacks", ignore = true)
-     void toLivroAtualizar(AtualizarLivroDTORequest atualizarLivroDTO, @MappingTarget Livro livro);
+    Livro toLivro(AdicionarLivroDTORequest criarLivroDTO);
+    void toLivroAtualizar(AtualizarLivroDTORequest atualizarLivroDTO, @MappingTarget Livro livro);
+
 }
