@@ -72,4 +72,23 @@ public class LivroService {
         return livroRepository.findAll();
     }
 
+    public List<Livro> listarLivrosDisponiveis() {
+        return livroRepository.findByDisponivel(true);
+    }
+
+    public List<Livro> listarLivrosIndisponiveis() {
+        return livroRepository.findByDisponivel(false);
+    }
+
+    public List<Livro> listarLivrosPorGenero(String genero) {
+        return livroRepository.findByGenero(genero);
+    }
+
+    public List<Livro> listarLivrosPorAutor(String autor) {
+        return livroRepository.findByAutor(autor);
+    }
+
+    public Livro listarLivroPorTitulo(String titulo) {
+        return livroRepository.findByTitulo(titulo);
+    }
 }
