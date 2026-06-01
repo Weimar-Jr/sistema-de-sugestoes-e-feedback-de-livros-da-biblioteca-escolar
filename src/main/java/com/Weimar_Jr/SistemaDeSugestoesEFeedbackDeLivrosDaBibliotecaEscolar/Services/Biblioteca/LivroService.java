@@ -99,7 +99,7 @@ public class LivroService {
         return livroRepository.findByAutor(autor).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
     }
 
-    public List<LivroDTOResponse> listarLivroPorTitulo(String titulo) {
+    public List<LivroDTOResponse> listarLivrosPorTitulo(String titulo) {
         return livroRepository.findByTitulo(titulo).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
     }
 }
