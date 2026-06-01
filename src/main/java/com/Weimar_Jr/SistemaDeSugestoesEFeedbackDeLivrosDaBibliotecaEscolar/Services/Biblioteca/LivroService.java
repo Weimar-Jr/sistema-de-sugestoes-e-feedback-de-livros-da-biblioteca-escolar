@@ -11,6 +11,8 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Serv
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class LivroService {
@@ -65,4 +67,9 @@ public class LivroService {
             throw new RuntimeException("Livro já está disponível na biblioteca");
         }
     }
+
+    public List<Livro> listarLivros() {
+        return livroRepository.findAll();
+    }
+
 }

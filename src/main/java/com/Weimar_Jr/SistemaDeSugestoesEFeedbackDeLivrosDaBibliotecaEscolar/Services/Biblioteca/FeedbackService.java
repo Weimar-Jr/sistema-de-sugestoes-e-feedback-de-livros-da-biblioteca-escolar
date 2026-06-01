@@ -6,7 +6,9 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.AtualizarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.CriarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.FeedbackMapper;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.FeedbackRepository;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.LivroRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Usuario.AlunoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class FeedbackService {
     final LivroService livroService;
+    final LivroRepository livroRepository;
     final AlunoService alunoService;
+    final AlunoRepository alunoRepository;
     final FeedbackRepository feedbackRepository;
     final FeedbackMapper feedbackMapper;
 
@@ -25,6 +29,10 @@ public class FeedbackService {
         Aluno aluno = alunoService.acharAlunoPeloId(feedbackDTO.idAluno());
         feedback.setLivro(livro);
         feedback.setAluno(aluno);
+        aluno.adiconarFeedback(feedback);
+        livro.adicionarFeedback(feedback);
+        livroRepository.save(livro);
+        alunoRepository.save(aluno);
         feedbackRepository.save(feedback);
     }
 

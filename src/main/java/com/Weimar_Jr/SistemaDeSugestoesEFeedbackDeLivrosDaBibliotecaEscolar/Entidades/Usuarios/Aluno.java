@@ -35,4 +35,8 @@ public class Aluno {
     @Column(name = "livro_emprestado_id")
     @OneToOne
     private Livro livroEmprestado;
+
+    public void adiconarFeedback(Feedback feedback) {
+        feedbacks.add(feedback);
+    }
 }

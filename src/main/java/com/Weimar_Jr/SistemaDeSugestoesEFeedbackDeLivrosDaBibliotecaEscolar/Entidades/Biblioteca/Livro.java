@@ -44,4 +44,8 @@ public class Livro {
     private Aluno alunoEmprestado;
     @OneToMany(mappedBy = "livro")
     private List<Feedback> feedbacks;
+
+    public void adicionarFeedback(Feedback feedback) {
+        feedbacks.add(feedback);
+    }
 }
