@@ -5,11 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     Feedback findByIdAndVisivelTrue(Long id);
 
     @Query("SELECT AVG(f.avaliacao) FROM Feedback f WHERE f.livro.id = :idLivro")
     Double mediaAvaliacaoByLivroId(@Param("idLivro") Long idLivro);
-
-
+    List<Feedback> findFeedbacksByLivroIdAndVisivelTrue(Long idLivro);
+    List<Feedback> findFeedbacksByAlunoIdAndVisivelTrue(Long idAluno);
 }
