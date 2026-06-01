@@ -40,6 +40,9 @@ public class LivroService {
         Livro livro = acharLivroPorId(idLivro);
         Aluno aluno = alunoService.acharAlunoPeloId(idAluno);
         if (livro.getDisponivel()) {
+            if(aluno.getLivroEmprestado() != null) {
+                throw new RuntimeException("Aluno já possui um livro emprestado");
+            }
             livro.setDisponivel(false);
             livro.setAlunoEmprestado(aluno);
             livroRepository.save(livro);
