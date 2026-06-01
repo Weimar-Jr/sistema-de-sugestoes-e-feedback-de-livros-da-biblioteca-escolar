@@ -5,6 +5,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Usuarios.Aluno;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.AtualizarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.CriarFeedbackDTORequest;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.FeedbackMapper;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.FeedbackRepository;
@@ -70,14 +71,14 @@ public class FeedbackService {
         feedbackRepository.save(feedback);
     }
 
-    public List<Feedback> listarFeedbacksPorLivro(Long idLivro) {
-        return feedbackRepository.findFeedbacksByLivroIdAndVisivelTrue(idLivro);
+    public List<FeedbackDTOResponse> listarFeedbacksPorLivro(Long idLivro) {
+        return feedbackRepository.findFeedbacksByLivroIdAndVisivelTrue(idLivro).stream().map(feedback -> feedbackMapper.toFeedbackDTOResponse(feedback)).collect(java.util.stream.Collectors.toList());
     }
-    public List<Feedback> listarFeedbacksPorAluno(Long idAluno) {
-        return feedbackRepository.findFeedbacksByAlunoIdAndVisivelTrue(idAluno);
+    public List<FeedbackDTOResponse> listarFeedbacksPorAluno(Long idAluno) {
+        return feedbackRepository.findFeedbacksByAlunoIdAndVisivelTrue(idAluno).stream().map(feedback -> feedbackMapper.toFeedbackDTOResponse(feedback)).collect(java.util.stream.Collectors.toList());
     }
 
-    void atualizarMediaAvaliacaoDoLivro(Long idLivro) {
+    public void atualizarMediaAvaliacaoDoLivro(Long idLivro) {
         Double mediaAvaliacao = feedbackRepository.mediaAvaliacaoByLivroId(idLivro);
         Livro livro = livroService.acharLivroPorId(idLivro);
         livro.setMediaAvaliacao(mediaAvaliacao);

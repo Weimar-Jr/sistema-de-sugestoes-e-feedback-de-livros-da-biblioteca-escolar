@@ -2,6 +2,7 @@ package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Ser
 
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Usuarios.Aluno;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.AlunoMapper;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.AlunoDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.AtualizarAlunoDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.CriarUsuarioAlunoDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
@@ -14,6 +15,10 @@ public class AlunoService {
 
     final AlunoRepository alunoRepository;
     final AlunoMapper alunoMapper;
+
+    public AlunoDTOResponse obterAlunoPorId(Long id) {
+        return alunoMapper.toAlunoDTOResponse(acharAlunoPeloId(id));
+    }
 
     public void cadastrarAluno(CriarUsuarioAlunoDTORequest alunoDTO) {
         Aluno aluno = alunoMapper.toAluno(alunoDTO);
@@ -34,7 +39,7 @@ public class AlunoService {
         return alunoRepository.findByEmail(email).isPresent();
     }
 
-    public Aluno acharAlunoPeloId(Long id) {
+     public Aluno acharAlunoPeloId(Long id) {
         return alunoRepository.findById(id).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
     }
 }

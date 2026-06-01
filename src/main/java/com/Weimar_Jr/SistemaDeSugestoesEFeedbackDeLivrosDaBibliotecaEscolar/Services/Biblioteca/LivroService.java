@@ -4,6 +4,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Usuarios.Aluno;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AdicionarLivroDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AtualizarLivroDTORequest;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.LivroDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.LivroMapper;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.LivroRepository;
@@ -25,6 +26,11 @@ public class LivroService {
     public void cadastrarLivro(AdicionarLivroDTORequest livroDTO) {
         Livro livro = livroMapper.toLivro(livroDTO);
         livroRepository.save(livro);
+    }
+
+    public LivroDTOResponse obterLivroPorId(Long id) {
+        Livro livro = acharLivroPorId(id);
+        return livroMapper.toLivroDTOResponse(livro);
     }
 
     public void atualizarLivro(Long id, AtualizarLivroDTORequest livroDTO) {
@@ -73,27 +79,27 @@ public class LivroService {
         }
     }
 
-    public List<Livro> listarLivros() {
-        return livroRepository.findAll();
+    public List<LivroDTOResponse> listarLivros() {
+        return livroRepository.findAll().stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
     }
 
-    public List<Livro> listarLivrosDisponiveis() {
-        return livroRepository.findByDisponivel(true);
+    public List<LivroDTOResponse> listarLivrosDisponiveis() {
+        return livroRepository.findByDisponivel(true).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
     }
 
-    public List<Livro> listarLivrosIndisponiveis() {
-        return livroRepository.findByDisponivel(false);
+    public List<LivroDTOResponse> listarLivrosIndisponiveis() {
+        return livroRepository.findByDisponivel(false).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
     }
 
-    public List<Livro> listarLivrosPorGenero(String genero) {
-        return livroRepository.findByGenero(genero);
+    public List<LivroDTOResponse> listarLivrosPorGenero(String genero) {
+        return livroRepository.findByGenero(genero).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
     }
 
-    public List<Livro> listarLivrosPorAutor(String autor) {
-        return livroRepository.findByAutor(autor);
+    public List<LivroDTOResponse> listarLivrosPorAutor(String autor) {
+        return livroRepository.findByAutor(autor).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
     }
 
-    public List<Livro> listarLivroPorTitulo(String titulo) {
-        return livroRepository.findByTitulo(titulo);
+    public List<LivroDTOResponse> listarLivroPorTitulo(String titulo) {
+        return livroRepository.findByTitulo(titulo).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
     }
 }
