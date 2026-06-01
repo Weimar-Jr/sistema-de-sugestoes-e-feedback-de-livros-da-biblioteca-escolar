@@ -25,6 +25,7 @@ public class Livro {
     @NotBlank
     private String autor;
     @NotNull
+    @Column(name = "ano_publicacao")
     private int anoPublicacao;
     @NotBlank
     private String genero;
@@ -33,9 +34,11 @@ public class Livro {
     @NotBlank
     private String descricao;
     @NotNull
-    @Column(columnDefinition = "DOUBLE PRECISION DEFAULT 0.0")
+    @Column(columnDefinition = "DOUBLE PRECISION DEFAULT 0.0", name = "media_avaliacao")
     private Double mediaAvaliacao;
-    @OneToOne(mappedBy = "livroEmprestado")
+
+    @Column(name = "livro_emprestado_id")
+    @OneToOne(mappedBy = "livroEmprestado", cascade = CascadeType.ALL)
     private Aluno alunoEmprestado;
     @OneToMany(mappedBy = "livro")
     private List<Feedback> feedbacks;

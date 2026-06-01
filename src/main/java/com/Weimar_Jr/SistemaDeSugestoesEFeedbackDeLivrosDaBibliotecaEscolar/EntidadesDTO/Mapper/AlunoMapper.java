@@ -12,6 +12,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", uses = {LivroMapper.class, FeedbackMapper.class}, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AlunoMapper {
     AlunoDTOResponse toAlunoDTOResponse(Aluno aluno);
-    void toAlunoAtualizar(AtualizarAlunoDTORequest atualizarAlunoDTO, @MappingTarget Aluno aluno);
+    Aluno toAlunoAtualizar(AtualizarAlunoDTORequest atualizarAlunoDTO, @MappingTarget Aluno aluno);
     Aluno toAluno(CriarUsuarioAlunoDTORequest criarAlunoDTO);
 }

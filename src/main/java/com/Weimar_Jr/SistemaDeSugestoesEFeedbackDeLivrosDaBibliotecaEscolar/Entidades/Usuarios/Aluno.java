@@ -19,7 +19,7 @@ public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank @Column(unique = true)
+    @NotBlank @Column(unique = true, name = "registro_de_aluno")
     private String registroDeAluno;
     @NotBlank
     private String nome;
@@ -30,6 +30,7 @@ public class Aluno {
 
     @OneToMany(mappedBy = "aluno")
     private List<Feedback> feedbacks;
+    @Column(name = "livro_emprestado_id")
     @OneToOne
     private Livro livroEmprestado;
 }
