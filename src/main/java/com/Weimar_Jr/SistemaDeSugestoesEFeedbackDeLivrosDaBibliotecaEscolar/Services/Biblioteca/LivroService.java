@@ -8,6 +8,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.LivroRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Usuario.AlunoService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +41,7 @@ public class LivroService {
         livroRepository.deleteById(id);
     }
 
+    @Transactional
     public void emprestarLivro(Long idLivro, Long idAluno) {
         Livro livro = acharLivroPorId(idLivro);
         Aluno aluno = alunoService.acharAlunoPeloId(idAluno);
@@ -49,11 +51,14 @@ public class LivroService {
             }
             livro.setDisponivel(false);
             livro.setAlunoEmprestado(aluno);
+            aluno.setLivroEmprestado(livro);
+            alunoRepository.save(aluno);
             livroRepository.save(livro);
         } else {
             throw new RuntimeException("Livro indisponível para empréstimo");
         }
     }
+    @Transactional
     public void devolverLivro(Long idLivro) {
         Livro livro = acharLivroPorId(idLivro);
         Aluno aluno = livro.getAlunoEmprestado();
@@ -88,7 +93,7 @@ public class LivroService {
         return livroRepository.findByAutor(autor);
     }
 
-    public Livro listarLivroPorTitulo(String titulo) {
+    public List<Livro> listarLivroPorTitulo(String titulo) {
         return livroRepository.findByTitulo(titulo);
     }
 }

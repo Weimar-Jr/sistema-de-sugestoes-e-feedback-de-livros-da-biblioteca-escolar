@@ -10,6 +10,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repo
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.FeedbackRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.LivroRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Usuario.AlunoService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,20 +26,20 @@ public class FeedbackService {
     final FeedbackRepository feedbackRepository;
     final FeedbackMapper feedbackMapper;
 
+    @Transactional
     public void criarFeedback(CriarFeedbackDTORequest feedbackDTO) {
         Feedback feedback = feedbackMapper.toFeedback(feedbackDTO);
         Livro livro = livroService.acharLivroPorId(feedbackDTO.idLivro());
         Aluno aluno = alunoService.acharAlunoPeloId(feedbackDTO.idAluno());
         feedback.setLivro(livro);
         feedback.setAluno(aluno);
-        aluno.adiconarFeedback(feedback);
         livro.adicionarFeedback(feedback);
-        livroRepository.save(livro);
-        alunoRepository.save(aluno);
+        aluno.adiconarFeedback(feedback);
         feedbackRepository.save(feedback);
         atualizarMediaAvaliacaoDoLivro(feedbackDTO.idLivro());
     }
 
+    @Transactional
     public void deletarFeedback(Long id) {
         Feedback feedback = acharFeedbackPorId(id);
         Long idLivro = feedback.getLivro().getId();
@@ -46,6 +47,7 @@ public class FeedbackService {
         atualizarMediaAvaliacaoDoLivro(idLivro);
     }
 
+    @Transactional
     public void atualizarFeedback(Long id, AtualizarFeedbackDTORequest  feedbackDTO) {
         Feedback feedback = acharFeedbackPorId(id);
         feedbackMapper.toFeedbackAtualizar(feedbackDTO, feedback);

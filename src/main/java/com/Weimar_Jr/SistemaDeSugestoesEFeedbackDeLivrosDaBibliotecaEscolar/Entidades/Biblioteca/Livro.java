@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -43,7 +44,7 @@ public class Livro {
     @OneToOne(mappedBy = "livroEmprestado", cascade = CascadeType.ALL)
     private Aluno alunoEmprestado;
     @OneToMany(mappedBy = "livro")
-    private List<Feedback> feedbacks;
+    private List<Feedback> feedbacks = new ArrayList<>();
 
     public void adicionarFeedback(Feedback feedback) {
         feedbacks.add(feedback);

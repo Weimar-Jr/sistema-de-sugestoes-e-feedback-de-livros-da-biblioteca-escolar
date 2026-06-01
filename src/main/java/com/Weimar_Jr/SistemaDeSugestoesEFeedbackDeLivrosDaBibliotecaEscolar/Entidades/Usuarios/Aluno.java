@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
 import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,7 +32,7 @@ public class Aluno {
     private String senha;
 
     @OneToMany(mappedBy = "aluno")
-    private List<Feedback> feedbacks;
+    private List<Feedback> feedbacks = new ArrayList<>();
     @Column(name = "livro_emprestado_id")
     @OneToOne
     private Livro livroEmprestado;
