@@ -11,8 +11,8 @@ public record FeedbackDTOResponse(
         String comentario,
         @JsonProperty("avaliacao")
         int avaliacao,
-        @JsonProperty("visivel")
-        Boolean visivel,
+        @JsonProperty("nome_do_aluno_visivel")
+        Boolean nomeDoAlunoVisivel,
         @JsonProperty("aluno_id")
         Long idAluno,
         @JsonProperty("nome_aluno")

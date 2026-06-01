@@ -11,8 +11,8 @@ public record CriarFeedbackDTORequest(
         String comentario,
         @NotNull @JsonProperty("avaliacao")
         int avaliacao,
-        @NotNull @JsonProperty("visivel")
-        Boolean visivel,
+        @NotNull @JsonProperty("nome_do_aluno_visivel")
+        Boolean nomeDoAlunoVisivel,
         @JsonProperty("aluno_id")
         Long idAluno,
         @JsonProperty("livro_id")

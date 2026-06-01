@@ -24,7 +24,7 @@ public class Feedback {
     @NotNull
     private int avaliacao;
     @NotNull
-    private Boolean nickVisivel;
+    private Boolean nomeDoAlunoVisivel;
 
     @ManyToOne
     @JoinColumn(name = "id_livro")

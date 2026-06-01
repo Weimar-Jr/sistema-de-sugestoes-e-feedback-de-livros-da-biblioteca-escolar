@@ -10,8 +10,8 @@ public record AtualizarFeedbackDTORequest(
         String comentario,
         @NotNull @JsonProperty("avaliacao")
         int avaliacao,
-        @NotNull @JsonProperty("visivel")
-        Boolean visivel
+        @NotNull @JsonProperty("nome_do_aluno_visivel")
+        Boolean nomeDoAlunoVisivel
 )
 {
 }
