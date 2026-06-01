@@ -5,6 +5,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AdicionarLivroDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AtualizarLivroDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.LivroMapper;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.LivroRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Usuario.AlunoService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ public class LivroService {
     LivroRepository livroRepository;
     LivroMapper livroMapper;
     AlunoService alunoService;
+    AlunoRepository alunoRepository;
 
     public void cadastrarLivro(AdicionarLivroDTORequest livroDTO) {
         Livro livro = livroMapper.toLivro(livroDTO);
@@ -52,10 +54,13 @@ public class LivroService {
     }
     public void devolverLivro(Long idLivro) {
         Livro livro = acharLivroPorId(idLivro);
+        Aluno aluno = livro.getAlunoEmprestado();
         if (!livro.getDisponivel()) {
             livro.setDisponivel(true);
+            aluno.setLivroEmprestado(null);
             livro.setAlunoEmprestado(null);
             livroRepository.save(livro);
+            alunoRepository.save(aluno);
         } else {
             throw new RuntimeException("Livro já está disponível na biblioteca");
         }
