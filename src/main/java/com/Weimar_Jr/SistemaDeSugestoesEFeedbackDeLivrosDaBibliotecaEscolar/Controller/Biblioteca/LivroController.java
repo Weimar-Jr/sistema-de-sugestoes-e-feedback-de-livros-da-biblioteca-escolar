@@ -19,7 +19,8 @@ public class LivroController {
 
     @PostMapping
     public ResponseEntity<LivroDTOResponse> adicionarLivro(@RequestBody @Valid AdicionarLivroDTORequest livroDTO) {
-        return ResponseEntity.ok(livroService.cadastrarLivro(livroDTO));
+        LivroDTOResponse livroDTOResponse = livroService.cadastrarLivro(livroDTO);
+        return ResponseEntity.status(201).body(livroDTOResponse);
     }
 
     @GetMapping("/{id}")
@@ -28,8 +29,9 @@ public class LivroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LivroDTOResponse> atualizarLivro(@PathVariable Long id, @RequestBody @Valid AtualizarLivroDTORequest livroDTO) {
-        return ResponseEntity.ok(livroService.atualizarLivro(id, livroDTO));
+    public ResponseEntity<Void> atualizarLivro(@PathVariable Long id, @RequestBody @Valid AtualizarLivroDTORequest livroDTO) {
+        livroService.atualizarLivro(id, livroDTO);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
@@ -38,13 +40,15 @@ public class LivroController {
         return ResponseEntity.noContent().build();
     }
     @PatchMapping("/emprestar-livro/{idLivro}/aluno/{idAluno}")
-    public ResponseEntity<LivroDTOResponse> emprestarLivro(@PathVariable Long idLivro, @PathVariable Long idAluno) {
-        return ResponseEntity.ok(livroService.emprestarLivro(idLivro, idAluno));
+    public ResponseEntity<Void> emprestarLivro(@PathVariable Long idLivro, @PathVariable Long idAluno) {
+        livroService.emprestarLivro(idLivro, idAluno);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/devolver-livro/{idLivro}")
-    public ResponseEntity<LivroDTOResponse> devolverLivro(@PathVariable Long idLivro) {
-        return ResponseEntity.ok(livroService.devolverLivro(idLivro));
+    public ResponseEntity<Void> devolverLivro(@PathVariable Long idLivro) {
+        livroService.devolverLivro(idLivro);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/disponiveis")
@@ -57,7 +61,7 @@ public class LivroController {
         return ResponseEntity.ok(livroService.listarLivrosIndisponiveis());
     }
 
-    @GetMapping("/todos")
+    @GetMapping
     public ResponseEntity<List<LivroDTOResponse>> listarTodosOsLivros() {
         return ResponseEntity.ok(livroService.listarLivros());
     }

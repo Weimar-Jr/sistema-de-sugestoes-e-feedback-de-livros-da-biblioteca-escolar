@@ -6,6 +6,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.FeedbackMapper;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Biblioteca.FeedbackService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class FeedbackController {
     public ResponseEntity<FeedbackDTOResponse> acharFeedbackPorId(@PathVariable Long id) {
         Feedback feedback = feedbackService.acharFeedbackPorId(id);
         FeedbackDTOResponse feedbackDTOResponse = feedbackMapper.toFeedbackDTOResponse(feedback);
-        return ResponseEntity.ok(feedbackDTOResponse);
+        return ResponseEntity.status(201).body(feedbackDTOResponse);
     }
 
     @GetMapping("/por-livro/{idLivro}")
@@ -37,33 +38,33 @@ public class FeedbackController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> criarFeedback(@RequestBody CriarFeedbackDTORequest feedbackDTO) {
-        feedbackService.criarFeedback(feedbackDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<FeedbackDTOResponse> criarFeedback(@RequestBody @Valid CriarFeedbackDTORequest feedbackDTO) {
+        FeedbackDTOResponse feedbackDTOResponse = feedbackService.criarFeedback(feedbackDTO);
+        return ResponseEntity.status(201).body(feedbackDTOResponse);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> atualizarFeedback(@PathVariable Long id, @RequestBody AtualizarFeedbackDTORequest feedbackDTO) {
+    public ResponseEntity<Void> atualizarFeedback(@PathVariable Long id, @RequestBody  @Valid AtualizarFeedbackDTORequest feedbackDTO) {
         feedbackService.atualizarFeedback(id, feedbackDTO);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarFeedback(@PathVariable Long id) {
         feedbackService.deletarFeedback(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("ocultar-nome-no-feedback/{id}")
+    @PatchMapping("/ocultar-nome-no-feedback/{id}")
     public ResponseEntity<Void> ocultarNomeNoFeedback(@PathVariable Long id) {
         feedbackService.ocultarNomeNoFeedback(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("exibir-nome-no-feedback/{id}")
+    @PatchMapping("/exibir-nome-no-feedback/{id}")
     public ResponseEntity<Void> exibirNomeNoFeedback(@PathVariable Long id) {
         feedbackService.mostrarNomeNoFeedback(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
 }

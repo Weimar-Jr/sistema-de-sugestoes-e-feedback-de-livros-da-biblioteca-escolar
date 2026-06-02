@@ -29,15 +29,15 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> criarAluno(@RequestBody  @Valid CriarUsuarioAlunoDTORequest alunoDTO) {
-        alunoService.cadastrarAluno(alunoDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AlunoDTOResponse> criarAluno(@RequestBody  @Valid CriarUsuarioAlunoDTORequest alunoDTO) {
+        AlunoDTOResponse alunoDTOResponse = alunoService.cadastrarAluno(alunoDTO);
+        return ResponseEntity.status(201).body(alunoDTOResponse);
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> atualizarAluno(@PathVariable Long id, @RequestBody @Valid AtualizarAlunoDTORequest alunoDTO) {
         alunoService.atualizarAluno(id, alunoDTO);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

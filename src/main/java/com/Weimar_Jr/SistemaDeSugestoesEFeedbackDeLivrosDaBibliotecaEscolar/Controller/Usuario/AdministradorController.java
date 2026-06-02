@@ -30,14 +30,14 @@ public class AdministradorController {
 
     @PostMapping
     public ResponseEntity<AdministradorDTOResponse> criarAdministrador(@RequestBody  @Valid CriarUsuarioAdministradorDTORequest administradorDTO) {
-        administradorService.criarAdministrador(administradorDTO);
-        return ResponseEntity.ok().build();
+        AdministradorDTOResponse administradorDTOResponse = administradorService.criarAdministrador(administradorDTO);
+        return ResponseEntity.status(201).body(administradorDTOResponse);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AdministradorDTOResponse> atualizarAdministrador(@PathVariable Long id, @RequestBody @Valid AtualizarAdministradorDTORequest administradorDTO) {
+    public ResponseEntity<Void> atualizarAdministrador(@PathVariable Long id, @RequestBody @Valid AtualizarAdministradorDTORequest administradorDTO) {
         administradorService.atualizarAdministrador(id, administradorDTO);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

@@ -22,9 +22,10 @@ public class AlunoService {
         return alunoMapper.toAlunoDTOResponse(acharAlunoPeloId(id));
     }
 
-    public void cadastrarAluno(CriarUsuarioAlunoDTORequest alunoDTO) {
+    public AlunoDTOResponse cadastrarAluno(CriarUsuarioAlunoDTORequest alunoDTO) {
         Aluno aluno = alunoMapper.toAluno(alunoDTO);
         alunoRepository.save(aluno);
+        return alunoMapper.toAlunoDTOResponse(aluno);
     }
     public void atualizarAluno(Long id, AtualizarAlunoDTORequest alunoDTO) {
 

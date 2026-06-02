@@ -28,7 +28,7 @@ public class FeedbackService {
     final FeedbackMapper feedbackMapper;
 
     @Transactional
-    public void criarFeedback(CriarFeedbackDTORequest feedbackDTO) {
+    public FeedbackDTOResponse criarFeedback(CriarFeedbackDTORequest feedbackDTO) {
         Feedback feedback = feedbackMapper.toFeedback(feedbackDTO);
         Livro livro = livroService.acharLivroPorId(feedbackDTO.idLivro());
         Aluno aluno = alunoService.acharAlunoPeloId(feedbackDTO.idAluno());
@@ -38,6 +38,7 @@ public class FeedbackService {
         aluno.adiconarFeedback(feedback);
         feedbackRepository.save(feedback);
         atualizarMediaAvaliacaoDoLivro(feedbackDTO.idLivro());
+        return feedbackMapper.toFeedbackDTOResponse(feedback);
     }
 
     @Transactional

@@ -22,9 +22,10 @@ public class AdministradorService {
         return administradorMapper.toAdministradorDTOResponse(acharAdministradorPorId(id));
     }
 
-    public void criarAdministrador(CriarUsuarioAdministradorDTORequest administradorDTORequest) {
+    public AdministradorDTOResponse criarAdministrador(CriarUsuarioAdministradorDTORequest administradorDTORequest) {
         Administrador administrador = administradorMapper.toAdministrador(administradorDTORequest);
         administradorRepository.save(administrador);
+        return administradorMapper.toAdministradorDTOResponse(administrador);
     }
 
     Administrador acharAdministradorPorId(Long id) {
