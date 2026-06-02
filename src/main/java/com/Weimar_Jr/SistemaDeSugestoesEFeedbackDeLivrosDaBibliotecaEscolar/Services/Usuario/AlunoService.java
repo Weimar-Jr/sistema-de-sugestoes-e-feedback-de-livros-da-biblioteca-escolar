@@ -9,6 +9,8 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repo
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class AlunoService {
@@ -41,5 +43,9 @@ public class AlunoService {
 
      public Aluno acharAlunoPeloId(Long id) {
         return alunoRepository.findById(id).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+    }
+
+    public List<AlunoDTOResponse> obterTodosAlunos() {
+        return alunoRepository.findAll().stream().map(alunoMapper::toAlunoDTOResponse).toList();
     }
 }
