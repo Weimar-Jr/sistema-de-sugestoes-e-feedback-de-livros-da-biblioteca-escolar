@@ -2,12 +2,13 @@ package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Con
 
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AdicionarLivroDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AtualizarLivroDTORequest;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.LivroDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Biblioteca.LivroService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -16,63 +17,64 @@ public class LivroController {
 
     final LivroService livroService;
 
-
-    public void adicionarLivro(@RequestBody AdicionarLivroDTORequest livroDTO) {
-        livroService.cadastrarLivro(livroDTO);
+    @PostMapping
+    public ResponseEntity<LivroDTOResponse> adicionarLivro(@RequestBody @Valid AdicionarLivroDTORequest livroDTO) {
+        return ResponseEntity.ok(livroService.cadastrarLivro(livroDTO));
     }
 
-    @RequestMapping("/{id}")
-    public void obterLivroPorId(@PathVariable Long id) {
-        livroService.obterLivroPorId(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<LivroDTOResponse> obterLivroPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(livroService.obterLivroPorId(id));
     }
 
-    @RequestMapping("/editar-livro/{id}")
-    public void atualizarLivro(@PathVariable Long id, @RequestBody AtualizarLivroDTORequest livroDTO) {
-        livroService.atualizarLivro(id, livroDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<LivroDTOResponse> atualizarLivro(@PathVariable Long id, @RequestBody @Valid AtualizarLivroDTORequest livroDTO) {
+        return ResponseEntity.ok(livroService.atualizarLivro(id, livroDTO));
     }
 
-    @RequestMapping("/deletar-livro/{id}")
-    public void deletarLivro(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarLivro(@PathVariable Long id) {
         livroService.deletarLivro(id);
+        return ResponseEntity.noContent().build();
     }
-    @RequestMapping("/emprestar-livro/{idLivro}/aluno/{idAluno}")
-    public void emprestarLivro(@PathVariable Long idLivro, @PathVariable Long idAluno) {
-        livroService.emprestarLivro(idLivro, idAluno);
-    }
-
-    @RequestMapping("/devolver-livro/{idLivro}")
-    public void devolverLivro(@PathVariable Long idLivro) {
-        livroService.devolverLivro(idLivro);
+    @PatchMapping("/emprestar-livro/{idLivro}/aluno/{idAluno}")
+    public ResponseEntity<LivroDTOResponse> emprestarLivro(@PathVariable Long idLivro, @PathVariable Long idAluno) {
+        return ResponseEntity.ok(livroService.emprestarLivro(idLivro, idAluno));
     }
 
-    @RequestMapping("/disponiveis")
-    public void listarLivrosDisponiveis() {
-        livroService.listarLivrosDisponiveis();
+    @PatchMapping("/devolver-livro/{idLivro}")
+    public ResponseEntity<LivroDTOResponse> devolverLivro(@PathVariable Long idLivro) {
+        return ResponseEntity.ok(livroService.devolverLivro(idLivro));
     }
 
-    @RequestMapping("/emprestados")
-    public void listarLivrosEmprestados() {
-        livroService.listarLivrosIndisponiveis();
+    @GetMapping("/disponiveis")
+    public ResponseEntity<List<LivroDTOResponse>> listarLivrosDisponiveis() {
+        return ResponseEntity.ok(livroService.listarLivrosDisponiveis());
     }
 
-    @RequestMapping("/todos")
-    public void listarTodosOsLivros() {
-        livroService.listarLivros();
+    @GetMapping("/emprestados")
+    public ResponseEntity<List<LivroDTOResponse>> listarLivrosEmprestados() {
+        return ResponseEntity.ok(livroService.listarLivrosIndisponiveis());
     }
 
-    @RequestMapping("/autor/{autor}")
-    public void listarLivrosPorAutor(@PathVariable String autor) {
-        livroService.listarLivrosPorAutor(autor);
+    @GetMapping("/todos")
+    public ResponseEntity<List<LivroDTOResponse>> listarTodosOsLivros() {
+        return ResponseEntity.ok(livroService.listarLivros());
     }
 
-    @RequestMapping("/titulo/{titulo}")
-    public void listarLivrosPorTitulo(@PathVariable String titulo) {
-        livroService.listarLivrosPorTitulo(titulo);
+    @GetMapping("/autor/{autor}")
+    public ResponseEntity<List<LivroDTOResponse>> listarLivrosPorAutor(@PathVariable String autor) {
+        return ResponseEntity.ok(livroService.listarLivrosPorAutor(autor));
     }
 
-    @RequestMapping("/genero/{genero}")
-    public void listarLivrosPorGenero(@PathVariable String genero) {
-        livroService.listarLivrosPorGenero(genero);
+    @GetMapping("/titulo/{titulo}")
+    public ResponseEntity<List<LivroDTOResponse>> listarLivrosPorTitulo(@PathVariable String titulo) {
+        return ResponseEntity.ok(livroService.listarLivrosPorTitulo(titulo));
+    }
+
+    @GetMapping("/genero/{genero}")
+    public ResponseEntity<List<LivroDTOResponse>> listarLivrosPorGenero(@PathVariable String genero) {
+        return ResponseEntity.ok(livroService.listarLivrosPorGenero(genero));
     }
 
 }

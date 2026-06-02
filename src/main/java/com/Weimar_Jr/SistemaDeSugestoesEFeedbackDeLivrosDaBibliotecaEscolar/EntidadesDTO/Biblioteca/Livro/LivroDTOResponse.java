@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
+
 public record LivroDTOResponse(
         @JsonProperty("id_livro")
         Long id,

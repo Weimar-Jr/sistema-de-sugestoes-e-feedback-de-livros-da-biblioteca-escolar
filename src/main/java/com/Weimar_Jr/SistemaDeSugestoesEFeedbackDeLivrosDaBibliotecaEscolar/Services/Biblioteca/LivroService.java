@@ -23,9 +23,10 @@ public class LivroService {
     AlunoService alunoService;
     AlunoRepository alunoRepository;
 
-    public void cadastrarLivro(AdicionarLivroDTORequest livroDTO) {
+    public LivroDTOResponse cadastrarLivro(AdicionarLivroDTORequest livroDTO) {
         Livro livro = livroMapper.toLivro(livroDTO);
         livroRepository.save(livro);
+        return livroMapper.toLivroDTOResponse(livro);
     }
 
     public LivroDTOResponse obterLivroPorId(Long id) {
@@ -33,10 +34,11 @@ public class LivroService {
         return livroMapper.toLivroDTOResponse(livro);
     }
 
-    public void atualizarLivro(Long id, AtualizarLivroDTORequest livroDTO) {
+    public LivroDTOResponse atualizarLivro(Long id, AtualizarLivroDTORequest livroDTO) {
         Livro livro = acharLivroPorId(id);
         livroMapper.toLivroAtualizar(livroDTO, livro);
         livroRepository.save(livro);
+        return livroMapper.toLivroDTOResponse(livro);
     }
 
     public Livro acharLivroPorId(Long id) {
@@ -48,7 +50,7 @@ public class LivroService {
     }
 
     @Transactional
-    public void emprestarLivro(Long idLivro, Long idAluno) {
+    public LivroDTOResponse emprestarLivro(Long idLivro, Long idAluno) {
         Livro livro = acharLivroPorId(idLivro);
         Aluno aluno = alunoService.acharAlunoPeloId(idAluno);
         if (livro.getDisponivel()) {
@@ -60,12 +62,13 @@ public class LivroService {
             aluno.setLivroEmprestado(livro);
             alunoRepository.save(aluno);
             livroRepository.save(livro);
+            return livroMapper.toLivroDTOResponse(livro);
         } else {
             throw new RuntimeException("Livro indisponível para empréstimo");
         }
     }
     @Transactional
-    public void devolverLivro(Long idLivro) {
+        public LivroDTOResponse devolverLivro(Long idLivro) {
         Livro livro = acharLivroPorId(idLivro);
         Aluno aluno = livro.getAlunoEmprestado();
         if (!livro.getDisponivel()) {
@@ -74,6 +77,7 @@ public class LivroService {
             livro.setAlunoEmprestado(null);
             livroRepository.save(livro);
             alunoRepository.save(aluno);
+            return livroMapper.toLivroDTOResponse(livro);
         } else {
             throw new RuntimeException("Livro já está disponível na biblioteca");
         }
