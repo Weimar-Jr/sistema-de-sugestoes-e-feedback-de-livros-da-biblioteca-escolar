@@ -7,7 +7,9 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.CriarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.FeedbackMapper;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.FeedbackException.NenhumFeedbackComEsseIdException;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.FeedbackException.NenhumFeedbackDesseAlunoException;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.FeedbackException.NenhumFeedbackDoLivroFaladoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.FeedbackRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.LivroRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Usuario.AlunoService;
@@ -23,7 +25,6 @@ public class FeedbackService {
     final LivroService livroService;
     final LivroRepository livroRepository;
     final AlunoService alunoService;
-    final AlunoRepository alunoRepository;
     final FeedbackRepository feedbackRepository;
     final FeedbackMapper feedbackMapper;
 
@@ -58,7 +59,8 @@ public class FeedbackService {
     }
 
     public Feedback acharFeedbackPorId(Long id) {
-        return feedbackRepository.findById(id).orElseThrow(() -> new RuntimeException("Feedback não encontrado"));
+
+        return feedbackRepository.findById(id).orElseThrow(() -> new NenhumFeedbackComEsseIdException(id));
     }
 
     public void ocultarNomeNoFeedback(Long id) {
@@ -73,10 +75,19 @@ public class FeedbackService {
     }
 
     public List<FeedbackDTOResponse> listarFeedbacksPorLivro(Long idLivro) {
-        return feedbackRepository.findFeedbacksByLivroIdAndVisivelTrue(idLivro).stream().map(feedback -> feedbackMapper.toFeedbackDTOResponse(feedback)).collect(java.util.stream.Collectors.toList());
+        List<FeedbackDTOResponse> feedbacks = feedbackRepository.findFeedbacksByLivroId(idLivro).stream().map(feedbackMapper::toFeedbackDTOResponse).collect(java.util.stream.Collectors.toList());
+        if(feedbacks.isEmpty()) {
+            throw new NenhumFeedbackDoLivroFaladoException(idLivro);
+        }
+        return feedbacks;
+
     }
     public List<FeedbackDTOResponse> listarFeedbacksPorAluno(Long idAluno) {
-        return feedbackRepository.findFeedbacksByAlunoIdAndVisivelTrue(idAluno).stream().map(feedback -> feedbackMapper.toFeedbackDTOResponse(feedback)).collect(java.util.stream.Collectors.toList());
+        List<FeedbackDTOResponse> feedbacks = feedbackRepository.findFeedbacksByAlunoId(idAluno).stream().map(feedbackMapper::toFeedbackDTOResponse).collect(java.util.stream.Collectors.toList());
+       if(feedbacks.isEmpty()) {
+        throw new NenhumFeedbackDesseAlunoException(idAluno);
+       }
+        return feedbacks;
     }
 
     public void atualizarMediaAvaliacaoDoLivro(Long idLivro) {
