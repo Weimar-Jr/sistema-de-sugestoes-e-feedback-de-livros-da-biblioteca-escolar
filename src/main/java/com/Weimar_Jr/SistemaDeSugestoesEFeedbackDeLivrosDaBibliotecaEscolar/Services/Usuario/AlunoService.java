@@ -5,6 +5,8 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.AlunoDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.AtualizarAlunoDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.CriarUsuarioAlunoDTORequest;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NaoTemAlunoComEsseIdException;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NenhumAlunoCadastradoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -43,10 +45,14 @@ public class AlunoService {
     }
 
      public Aluno acharAlunoPeloId(Long id) {
-        return alunoRepository.findById(id).orElseThrow(() -> new RuntimeException("Aluno não encontrado"));
+        return alunoRepository.findById(id).orElseThrow(() -> new NaoTemAlunoComEsseIdException(id));
     }
 
     public List<AlunoDTOResponse> obterTodosAlunos() {
+        List<AlunoDTOResponse> alunosDTO = alunoRepository.findAll().stream().map(alunoMapper::toAlunoDTOResponse).toList();
+        if (alunosDTO.isEmpty()) {
+            throw new NenhumAlunoCadastradoException();
+        }
         return alunoRepository.findAll().stream().map(alunoMapper::toAlunoDTOResponse).toList();
     }
 }
