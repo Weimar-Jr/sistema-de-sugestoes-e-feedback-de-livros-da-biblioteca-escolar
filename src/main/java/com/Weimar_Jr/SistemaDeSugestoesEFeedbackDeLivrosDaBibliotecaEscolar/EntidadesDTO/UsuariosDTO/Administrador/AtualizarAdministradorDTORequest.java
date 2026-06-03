@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 
 public record AtualizarAdministradorDTORequest(
-        @NotBlank @JsonProperty("nome_administrador")
+        @JsonProperty("nome_administrador")
         String nome,
-        @NotBlank @JsonProperty("email_administrador")
+        @JsonProperty("email_administrador")
         String email,
-        @NotBlank @JsonProperty("senha_administrador")
+        @JsonProperty("senha_administrador")
         String senha
 
 ) {

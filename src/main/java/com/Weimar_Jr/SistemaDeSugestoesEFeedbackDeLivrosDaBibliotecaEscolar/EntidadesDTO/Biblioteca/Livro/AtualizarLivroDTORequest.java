@@ -5,17 +5,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record AtualizarLivroDTORequest(
-        @NotBlank @JsonProperty("titulo")
+        @JsonProperty("titulo")
         String titulo,
-        @NotBlank  @JsonProperty("autor")
+        @JsonProperty("autor")
         String autor,
-        @NotNull @JsonProperty("anoPublicacao")
-        int anoPublicacao,
-        @NotBlank @JsonProperty("genero")
+        @JsonProperty("anoPublicacao")
+        Integer anoPublicacao,
+        @JsonProperty("genero")
         String genero,
-        @NotBlank @JsonProperty("disponivel")
+        @JsonProperty("disponivel")
         Boolean disponivel,
-        @NotBlank @JsonProperty("descricao")
+        @JsonProperty("descricao")
         String descricao
 
 
