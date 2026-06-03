@@ -7,6 +7,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.LivroDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.LivroMapper;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.*;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.ExceptionsDeBusca.*;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.LivroRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Usuario.AlunoService;
@@ -35,11 +36,10 @@ public class LivroService {
         return livroMapper.toLivroDTOResponse(livro);
     }
 
-    public LivroDTOResponse atualizarLivro(Long id, AtualizarLivroDTORequest livroDTO) {
+    public void atualizarLivro(Long id, AtualizarLivroDTORequest livroDTO) {
         Livro livro = acharLivroPorId(id);
         livroMapper.toLivroAtualizar(livroDTO, livro);
         livroRepository.save(livro);
-        return livroMapper.toLivroDTOResponse(livro);
     }
 
     public Livro acharLivroPorId(Long id) {
@@ -52,7 +52,7 @@ public class LivroService {
     }
 
     @Transactional
-    public LivroDTOResponse emprestarLivro(Long idLivro, Long idAluno) {
+    public void emprestarLivro(Long idLivro, Long idAluno) {
         Livro livro = acharLivroPorId(idLivro);
         Aluno aluno = alunoService.acharAlunoPeloId(idAluno);
         if (livro.getDisponivel()) {
@@ -64,13 +64,12 @@ public class LivroService {
             aluno.setLivroEmprestado(livro);
             alunoRepository.save(aluno);
             livroRepository.save(livro);
-            return livroMapper.toLivroDTOResponse(livro);
         } else {
             throw new LivroIndisponivelException(idLivro);
         }
     }
     @Transactional
-        public LivroDTOResponse devolverLivro(Long idLivro) {
+        public void devolverLivro(Long idLivro) {
         Livro livro = acharLivroPorId(idLivro);
         Aluno aluno = livro.getAlunoEmprestado();
         if (!livro.getDisponivel()) {
@@ -79,7 +78,6 @@ public class LivroService {
             livro.setAlunoEmprestado(null);
             livroRepository.save(livro);
             alunoRepository.save(aluno);
-            return livroMapper.toLivroDTOResponse(livro);
         } else {
             throw new LivroJaConstaComoDevolvidoException();
         }

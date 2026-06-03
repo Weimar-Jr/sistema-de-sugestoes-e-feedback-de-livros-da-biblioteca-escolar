@@ -1,4 +1,4 @@
-package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException;
+package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.ExceptionsDeBusca;
 
 public class NenhumLivroCadastradoException  extends RuntimeException {
     public NenhumLivroCadastradoException() {

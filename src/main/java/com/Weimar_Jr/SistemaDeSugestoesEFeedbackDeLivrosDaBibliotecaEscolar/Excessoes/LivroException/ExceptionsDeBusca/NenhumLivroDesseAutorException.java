@@ -1,4 +1,4 @@
-package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException;
+package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.ExceptionsDeBusca;
 
 public class NenhumLivroDesseAutorException  extends RuntimeException {
     public NenhumLivroDesseAutorException(String autor) {
