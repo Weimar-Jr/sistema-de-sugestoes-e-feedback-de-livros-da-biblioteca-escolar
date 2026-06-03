@@ -1,11 +1,12 @@
 package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Usuario;
 
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Usuarios.Administrador;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.AtualizarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.AdministradorMapper;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Administrador.AdministradorDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Administrador.AtualizarAdministradorDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Administrador.CriarUsuarioAdministradorDTORequest;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdminComEsseIDException;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdministradorCadastradoExeption;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AdministradorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class AdministradorService {
 
     Administrador acharAdministradorPorId(Long id) {
         return administradorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Administrador não encontrado com ID: " + id));
+                .orElseThrow(() -> new NenhumAdminComEsseIDException(id));
     }
 
     public void atualizarAdministrador(Long id, AtualizarAdministradorDTORequest administradorDTORequest) {
@@ -44,8 +45,12 @@ public class AdministradorService {
         administradorRepository.delete(administradorExistente);
     }
     public List<AdministradorDTOResponse> obterTodosAdministradores() {
-        return administradorRepository.findAll().stream()
+        List<AdministradorDTOResponse> administradores = administradorRepository.findAll().stream()
                 .map(administradorMapper::toAdministradorDTOResponse)
                 .toList();
+        if (administradores.isEmpty()) {
+            throw new NenhumAdministradorCadastradoExeption();
+        }
+        return administradores;
     }
 }

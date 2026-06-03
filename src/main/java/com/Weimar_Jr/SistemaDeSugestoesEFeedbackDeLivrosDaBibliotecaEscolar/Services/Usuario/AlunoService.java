@@ -53,6 +53,6 @@ public class AlunoService {
         if (alunosDTO.isEmpty()) {
             throw new NenhumAlunoCadastradoException();
         }
-        return alunoRepository.findAll().stream().map(alunoMapper::toAlunoDTOResponse).toList();
+        return alunosDTO;
     }
 }
