@@ -6,6 +6,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AtualizarLivroDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.LivroDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.LivroMapper;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.*;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.LivroRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Usuario.AlunoService;
@@ -42,10 +43,11 @@ public class LivroService {
     }
 
     public Livro acharLivroPorId(Long id) {
-        return livroRepository.findById(id).orElseThrow(() -> new RuntimeException("Livro não encontrado"));
+        return livroRepository.findById(id).orElseThrow(() -> new LivroNaoEncontradoException(id));
     }
 
     public void deletarLivro(Long id) {
+        acharLivroPorId(id);
         livroRepository.deleteById(id);
     }
 
@@ -55,7 +57,7 @@ public class LivroService {
         Aluno aluno = alunoService.acharAlunoPeloId(idAluno);
         if (livro.getDisponivel()) {
             if(aluno.getLivroEmprestado() != null) {
-                throw new RuntimeException("Aluno já possui um livro emprestado");
+                throw new AlunoJaPossuiUmLivroEmprestadoException();
             }
             livro.setDisponivel(false);
             livro.setAlunoEmprestado(aluno);
@@ -64,7 +66,7 @@ public class LivroService {
             livroRepository.save(livro);
             return livroMapper.toLivroDTOResponse(livro);
         } else {
-            throw new RuntimeException("Livro indisponível para empréstimo");
+            throw new LivroIndisponivelException(idLivro);
         }
     }
     @Transactional
@@ -79,31 +81,55 @@ public class LivroService {
             alunoRepository.save(aluno);
             return livroMapper.toLivroDTOResponse(livro);
         } else {
-            throw new RuntimeException("Livro já está disponível na biblioteca");
+            throw new LivroJaConstaComoDevolvidoException();
         }
     }
 
     public List<LivroDTOResponse> listarLivros() {
-        return livroRepository.findAll().stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        List<LivroDTOResponse> livros = livroRepository.findAll().stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        if(livros.isEmpty()) {
+            throw new NenhumLivroCadastradoException();
+        }
+        return livros;
     }
 
     public List<LivroDTOResponse> listarLivrosDisponiveis() {
-        return livroRepository.findByDisponivel(true).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        List<LivroDTOResponse> livros = livroRepository.findByDisponivel(true).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        if(livros.isEmpty()) {
+            throw new NenhumLivroDisponivelException();
+        }
+        return livros;
     }
 
     public List<LivroDTOResponse> listarLivrosIndisponiveis() {
-        return livroRepository.findByDisponivel(false).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        List<LivroDTOResponse> livros = livroRepository.findByDisponivel(false).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        if(livros.isEmpty()) {
+            throw new NenhumLivroIndisponivelException();
+        }
+        return livros;
     }
 
     public List<LivroDTOResponse> listarLivrosPorGenero(String genero) {
-        return livroRepository.findByGenero(genero).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        List<LivroDTOResponse> livros = livroRepository.findByGenero(genero).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        if(livros.isEmpty()) {
+            throw new NenhumLivroDesseGeneroException(genero);
+        }
+        return livros;
     }
 
     public List<LivroDTOResponse> listarLivrosPorAutor(String autor) {
-        return livroRepository.findByAutor(autor).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        List<LivroDTOResponse> livros = livroRepository.findByAutor(autor).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        if(livros.isEmpty()) {
+            throw new NenhumLivroDesseAutorException(autor);
+        }
+        return livros;
     }
 
     public List<LivroDTOResponse> listarLivrosPorTitulo(String titulo) {
-        return livroRepository.findByTitulo(titulo).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        List<LivroDTOResponse> livros = livroRepository.findByTitulo(titulo).stream().map(livro -> livroMapper.toLivroDTOResponse(livro)).collect(java.util.stream.Collectors.toList());
+        if(livros.isEmpty()) {
+            throw new NenhumLivroAchadoPelotituloFaladoException(titulo);
+        }
+        return livros;
     }
 }

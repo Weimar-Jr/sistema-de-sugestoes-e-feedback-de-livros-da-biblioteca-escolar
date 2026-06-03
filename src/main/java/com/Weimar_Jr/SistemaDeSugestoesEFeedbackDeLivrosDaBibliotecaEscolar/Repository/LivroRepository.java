@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface LivroRepository extends JpaRepository<Livro, Long> {
 
-    public List<Livro> findByTitulo(String titulo);
-    public List<Livro> findByGenero(String genero);
-    public List<Livro> findByDisponivel(Boolean disponivel);
-    public List<Livro> findByAutor(String autor);
+    @Query("SELECT l FROM Livro l WHERE l.titulo LIKE %:titulo%")
+    List<Livro> findByTitulo(String titulo);
+    List<Livro> findByGenero(String genero);
+    List<Livro> findByDisponivel(Boolean disponivel);
+    @Query("SELECT l FROM Livro l WHERE l.autor LIKE %:autor%")
+    List<Livro> findByAutor(String autor);
 
 }
