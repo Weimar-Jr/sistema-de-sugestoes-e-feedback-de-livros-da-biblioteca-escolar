@@ -10,7 +10,7 @@ public record CriarUsuarioAlunoDTORequest(
         String email,
         @JsonProperty("senha_aluno")
         String senha,
-        @JsonProperty("registro_de_aluno")
+        @NotBlank @JsonProperty("registro_de_aluno")
         String registroDeAluno
 ) {
 }

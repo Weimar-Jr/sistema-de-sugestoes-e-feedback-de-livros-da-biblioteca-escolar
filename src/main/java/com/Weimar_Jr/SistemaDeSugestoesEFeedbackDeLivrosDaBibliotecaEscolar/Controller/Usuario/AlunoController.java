@@ -46,8 +46,8 @@ public class AlunoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/verificar-email/{email}")
-    public ResponseEntity<Boolean> verificarSeContaDoAlunoExiste(@PathVariable String email) {
-        return ResponseEntity.ok(alunoService.verificarSeContaDoAlunoExiste(email));
+    @GetMapping("/aluno/{email}")
+    public ResponseEntity<AlunoDTOResponse> acharAlunoPeloEmail(@PathVariable String email) {
+        return ResponseEntity.ok(alunoService.acharAlunoPeloEmail(email));
     }
 }
