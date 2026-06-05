@@ -1,5 +1,8 @@
 package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes;
 
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.ExceptionDeNegocio.JaTemAdminComEsseCpfException;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.ExceptionDeNegocio.JaTemAdminComEsseEmailException;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdminComEsseCpfException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdminComEsseIDException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdministradorCadastradoExeption;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.ExceptionDeNegocio.JaTemAlunoComEsseEmailException;
@@ -43,14 +46,24 @@ public class ClasseDeExcessoesGlobaisParaController {
             NenhumFeedbackDesseAlunoException.class,
             NenhumFeedbackDoLivroFaladoException.class,
             NenhumAlunoComEsseEmailException.class,
-            NenhumAlunoComEsseRegistroDeAlunoException.class
+            NenhumAlunoComEsseRegistroDeAlunoException.class,
+            NenhumAdminComEsseCpfException.class
     })
     public ResponseEntity<String> handleNotFoundExceptions(RuntimeException e) {
         return ResponseEntity.status(404).body(e.getMessage());
 
     }
 
-    @ExceptionHandler({AlunoJaPossuiUmLivroEmprestadoException.class, LivroIndisponivelException.class, LivroJaConstaComoDevolvidoException.class, JaTemAlunoComEsseEmailException.class, NenhumAlunoComEsseRegistroDeAlunoException.class, JaTemAlunoComEsseEmailException.class, JaTemAlunoComEsseRegistroException.class})
+    @ExceptionHandler({AlunoJaPossuiUmLivroEmprestadoException.class,
+            LivroIndisponivelException.class,
+            LivroJaConstaComoDevolvidoException.class,
+            JaTemAlunoComEsseEmailException.class,
+            NenhumAlunoComEsseRegistroDeAlunoException.class,
+            JaTemAlunoComEsseEmailException.class,
+            JaTemAlunoComEsseRegistroException.class,
+            JaTemAdminComEsseCpfException.class,
+            JaTemAdminComEsseEmailException.class
+    })
     public ResponseEntity<String> handleConflictExceptions(RuntimeException e) {
         return ResponseEntity.status(409).body(e.getMessage());
     }

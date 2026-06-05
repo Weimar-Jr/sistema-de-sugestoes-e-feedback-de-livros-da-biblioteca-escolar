@@ -5,6 +5,9 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Administrador.AdministradorDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Administrador.AtualizarAdministradorDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Administrador.CriarUsuarioAdministradorDTORequest;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.ExceptionDeNegocio.JaTemAdminComEsseCpfException;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.ExceptionDeNegocio.JaTemAdminComEsseEmailException;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdminComEsseCpfException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdminComEsseIDException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdministradorCadastradoExeption;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AdministradorRepository;
@@ -24,12 +27,20 @@ public class AdministradorService {
     }
 
     public AdministradorDTOResponse criarAdministrador(CriarUsuarioAdministradorDTORequest administradorDTORequest) {
+        if(jaTemAdminComEsseCpf(administradorDTORequest.cpf()))
+        {
+            throw new JaTemAdminComEsseCpfException(administradorDTORequest.cpf());
+        }
+        if(jaTemAdminComEsseEmail(administradorDTORequest.email()))
+        {
+            throw new JaTemAdminComEsseEmailException(administradorDTORequest.email());
+        }
         Administrador administrador = administradorMapper.toAdministrador(administradorDTORequest);
         administradorRepository.save(administrador);
         return administradorMapper.toAdministradorDTOResponse(administrador);
     }
 
-    Administrador acharAdministradorPorId(Long id) {
+    private Administrador acharAdministradorPorId(Long id) {
         return administradorRepository.findById(id)
                 .orElseThrow(() -> new NenhumAdminComEsseIDException(id));
     }
@@ -53,4 +64,19 @@ public class AdministradorService {
         }
         return administradores;
     }
+    public AdministradorDTOResponse obterAdministradorPorCpf(String cpf) {
+        Administrador administrador = administradorRepository.findByCpf(cpf).orElseThrow(() -> new NenhumAdminComEsseCpfException(cpf));
+        return administradorMapper.toAdministradorDTOResponse(administrador);
+    }
+
+    private Boolean jaTemAdminComEsseCpf(String cpf)
+    {
+        return administradorRepository.findByCpf(cpf).isPresent();
+    }
+
+    private  Boolean jaTemAdminComEsseEmail(String email)
+    {
+        return administradorRepository.findByEmail(email).isPresent();
+    }
+
 }

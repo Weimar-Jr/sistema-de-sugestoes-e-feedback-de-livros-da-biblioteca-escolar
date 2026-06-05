@@ -145,6 +145,16 @@ class AlunoServiceTest {
     }
 
     @Test
+    void deveDarExceptionAtualizarAlunoTest()
+    {
+        when(alunoRepository.findById(aluno.getId())).thenReturn(Optional.empty());
+        assertThrows(NaoTemAlunoComEsseIdException.class, () -> alunoService.atualizarAluno(aluno.getId(), atualizarAlunoDTORequest));
+        verify(alunoRepository , times(1)).findById(aluno.getId());
+        verifyNoInteractions(alunoMapper);
+        verifyNoMoreInteractions(alunoRepository);
+    }
+
+    @Test
     void deveAtualizarOAlunoTest() {
         when(alunoRepository.findById(aluno.getId())).thenReturn(Optional.of(aluno));
         doAnswer(invocation -> {

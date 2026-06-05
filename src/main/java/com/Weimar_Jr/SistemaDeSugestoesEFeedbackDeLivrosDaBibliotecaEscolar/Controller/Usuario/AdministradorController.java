@@ -28,6 +28,11 @@ public class AdministradorController {
         return ResponseEntity.ok(administradorService.obterTodosAdministradores());
     }
 
+    @GetMapping("/admin/{email}")
+    public ResponseEntity<AdministradorDTOResponse> obterAdminPeloCpf(@PathVariable String email) {
+        return ResponseEntity.ok(administradorService.obterAdministradorPorCpf(email));
+    }
+
     @PostMapping
     public ResponseEntity<AdministradorDTOResponse> criarAdministrador(@RequestBody  @Valid CriarUsuarioAdministradorDTORequest administradorDTO) {
         AdministradorDTOResponse administradorDTOResponse = administradorService.criarAdministrador(administradorDTO);
@@ -35,7 +40,7 @@ public class AdministradorController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> atualizarAdministrador(@PathVariable Long id, @RequestBody @Valid AtualizarAdministradorDTORequest administradorDTO) {
+    public ResponseEntity<Void> atualizarAdministrador(@PathVariable Long id, @RequestBody  AtualizarAdministradorDTORequest administradorDTO) {
         administradorService.atualizarAdministrador(id, administradorDTO);
         return ResponseEntity.noContent().build();
     }

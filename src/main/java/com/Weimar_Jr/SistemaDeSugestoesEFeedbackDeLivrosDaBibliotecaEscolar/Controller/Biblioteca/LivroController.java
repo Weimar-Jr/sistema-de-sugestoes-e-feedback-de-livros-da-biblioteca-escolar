@@ -29,7 +29,7 @@ public class LivroController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> atualizarLivro(@PathVariable Long id, @RequestBody @Valid AtualizarLivroDTORequest livroDTO) {
+    public ResponseEntity<Void> atualizarLivro(@PathVariable Long id, @RequestBody AtualizarLivroDTORequest livroDTO) {
         livroService.atualizarLivro(id, livroDTO);
         return ResponseEntity.noContent().build();
     }

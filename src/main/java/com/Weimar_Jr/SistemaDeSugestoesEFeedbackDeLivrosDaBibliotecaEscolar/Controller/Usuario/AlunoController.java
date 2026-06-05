@@ -35,7 +35,7 @@ public class AlunoController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> atualizarAluno(@PathVariable Long id, @RequestBody @Valid AtualizarAlunoDTORequest alunoDTO) {
+    public ResponseEntity<Void> atualizarAluno(@PathVariable Long id, @RequestBody AtualizarAlunoDTORequest alunoDTO) {
         alunoService.atualizarAluno(id, alunoDTO);
         return ResponseEntity.noContent().build();
     }
