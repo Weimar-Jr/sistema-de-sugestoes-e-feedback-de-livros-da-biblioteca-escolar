@@ -10,7 +10,7 @@ public record FeedbackDTOResponse(
         @JsonProperty("comentario")
         String comentario,
         @JsonProperty("avaliacao")
-        int avaliacao,
+        Double avaliacao,
         @JsonProperty("nome_do_aluno_visivel")
         Boolean nomeDoAlunoVisivel,
         @JsonProperty("aluno_id")

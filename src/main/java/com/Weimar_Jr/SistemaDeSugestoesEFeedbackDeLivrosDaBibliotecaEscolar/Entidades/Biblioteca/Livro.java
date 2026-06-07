@@ -27,6 +27,8 @@ public class Livro {
     private String titulo;
     @NotBlank
     private String autor;
+    @NotBlank
+    private String editora;
     @NotNull
     @Column(name = "ano_publicacao")
     private int anoPublicacao;
@@ -36,7 +38,6 @@ public class Livro {
     private Boolean disponivel;
     @NotBlank
     private String descricao;
-    @NotNull
     @Column(columnDefinition = "DOUBLE PRECISION DEFAULT 0.0", name = "media_avaliacao")
     private Double mediaAvaliacao;
 

@@ -13,6 +13,8 @@ public record LivroDTOResponse(
         String titulo,
         @JsonProperty("autor")
         String autor,
+        @JsonProperty("editora")
+        String editora,
         @JsonProperty("anoPublicacao")
         int anoPublicacao,
         @JsonProperty("genero")

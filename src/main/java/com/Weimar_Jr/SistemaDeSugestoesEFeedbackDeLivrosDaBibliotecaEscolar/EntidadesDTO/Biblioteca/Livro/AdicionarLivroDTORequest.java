@@ -9,6 +9,8 @@ public record AdicionarLivroDTORequest(
         String titulo,
         @NotBlank  @JsonProperty("autor")
         String autor,
+        @NotBlank @JsonProperty("editora")
+        String editora,
         @NotNull @JsonProperty("anoPublicacao")
         int anoPublicacao,
         @NotBlank @JsonProperty("genero")

@@ -22,7 +22,7 @@ public class Feedback {
     @NotNull
     private String comentario;
     @NotNull
-    private int avaliacao;
+    private Double avaliacao;
     @NotNull
     private Boolean nomeDoAlunoVisivel;
 

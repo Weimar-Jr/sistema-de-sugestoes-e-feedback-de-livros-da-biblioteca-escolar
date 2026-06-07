@@ -15,8 +15,9 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Exce
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.FeedbackException.NenhumFeedbackDoLivroFaladoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.AlunoJaPossuiUmLivroEmprestadoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.ExceptionsDeBusca.*;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.JaTemLivroSemelhanteCadastradoExeption;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.LivroIndisponivelException;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.LivroJaConstaComoDevolvidoException;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.LivroJaConstaComoNaoEmprestadoException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -56,13 +57,14 @@ public class ClasseDeExcessoesGlobaisParaController {
 
     @ExceptionHandler({AlunoJaPossuiUmLivroEmprestadoException.class,
             LivroIndisponivelException.class,
-            LivroJaConstaComoDevolvidoException.class,
+            LivroJaConstaComoNaoEmprestadoException.class,
             JaTemAlunoComEsseEmailException.class,
             NenhumAlunoComEsseRegistroDeAlunoException.class,
             JaTemAlunoComEsseEmailException.class,
             JaTemAlunoComEsseRegistroException.class,
             JaTemAdminComEsseCpfException.class,
-            JaTemAdminComEsseEmailException.class
+            JaTemAdminComEsseEmailException.class,
+            JaTemLivroSemelhanteCadastradoExeption.class
     })
     public ResponseEntity<String> handleConflictExceptions(RuntimeException e) {
         return ResponseEntity.status(409).body(e.getMessage());

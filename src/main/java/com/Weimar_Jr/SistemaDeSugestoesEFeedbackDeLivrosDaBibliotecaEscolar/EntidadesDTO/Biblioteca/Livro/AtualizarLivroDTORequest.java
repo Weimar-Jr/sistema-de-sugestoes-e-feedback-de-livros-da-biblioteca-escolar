@@ -9,14 +9,17 @@ public record AtualizarLivroDTORequest(
         String titulo,
         @JsonProperty("autor")
         String autor,
+        @JsonProperty("editora")
+        String editora,
         @JsonProperty("anoPublicacao")
         Integer anoPublicacao,
+        @JsonProperty("descricao")
+        String descricao,
         @JsonProperty("genero")
         String genero,
         @JsonProperty("disponivel")
-        Boolean disponivel,
-        @JsonProperty("descricao")
-        String descricao
+        Boolean disponivel
+
 
 
 ) {
