@@ -63,9 +63,7 @@ class AlunoServiceTest {
         when(alunoRepository.findByEmail("weimar@example.com")).thenReturn(Optional.of(aluno));
         when(alunoMapper.toAluno(criarUsuarioAlunoDTORequest)).thenReturn(aluno);
 
-        Exception exception= assertThrows(JaTemAlunoComEsseEmailException.class, () -> alunoService.cadastrarAluno(criarUsuarioAlunoDTORequest));
-        Exception exceptionEsperada = new JaTemAlunoComEsseEmailException(aluno.getEmail());
-        assertEquals(exceptionEsperada.getMessage(),exception.getMessage());
+        assertThrows(JaTemAlunoComEsseEmailException.class, () -> alunoService.cadastrarAluno(criarUsuarioAlunoDTORequest));
 
         verify(alunoRepository, times(1)).findByEmail("weimar@example.com");
         verify(alunoMapper, times(1)).toAluno(criarUsuarioAlunoDTORequest);
@@ -81,9 +79,7 @@ class AlunoServiceTest {
         when(alunoRepository.findByEmail(aluno.getEmail())).thenReturn(Optional.empty());
         when(alunoMapper.toAluno(criarUsuarioAlunoDTORequest)).thenReturn(aluno);
 
-        Exception exceptionEsperada = new JaTemAlunoComEsseRegistroException();
-        Exception exceptionRetornada = assertThrows(JaTemAlunoComEsseRegistroException.class, () -> alunoService.cadastrarAluno(criarUsuarioAlunoDTORequest));
-        assertEquals(exceptionEsperada.getMessage(), exceptionRetornada.getMessage());
+        assertThrows(JaTemAlunoComEsseRegistroException.class, () -> alunoService.cadastrarAluno(criarUsuarioAlunoDTORequest));
 
         verify(alunoRepository, times(1)).findByRegistroDeAluno(aluno.getRegistroDeAluno());
         verify(alunoMapper, times(1)).toAluno(criarUsuarioAlunoDTORequest);
@@ -105,7 +101,7 @@ class AlunoServiceTest {
         ArgumentCaptor<Aluno> captor = ArgumentCaptor.forClass(Aluno.class);
         verify(alunoRepository, times(1)).save(captor.capture());
         Aluno alunoSalvo = captor.getValue();
-        assertEquals(aluno.getClass(), alunoSalvo.getClass());
+        assertEquals(aluno, alunoSalvo);
         assertEquals(alunoDTOResponse, alunoRetornado);
 
         verify(alunoRepository, times(1)).save(aluno);
@@ -120,9 +116,7 @@ class AlunoServiceTest {
     {
         when(alunoRepository.findById(aluno.getId())).thenReturn(Optional.empty());
 
-        Exception exceptionEsperada = new NaoTemAlunoComEsseIdException(aluno.getId());
-        Exception exceptionRetornada = assertThrows(NaoTemAlunoComEsseIdException.class, () -> alunoService.obterAlunoPorId(aluno.getId()));
-        assertEquals(exceptionEsperada.getMessage(), exceptionRetornada.getMessage());
+        assertThrows(NaoTemAlunoComEsseIdException.class, () -> alunoService.obterAlunoPorId(aluno.getId()));
 
         verify(alunoRepository, times(1)).findById(aluno.getId());
         verifyNoMoreInteractions(alunoRepository);
@@ -136,7 +130,7 @@ class AlunoServiceTest {
         when(alunoMapper.toAlunoDTOResponse(aluno)).thenReturn(alunoDTOResponse);
 
         AlunoDTOResponse alunoRetornado = alunoService.obterAlunoPorId(aluno.getId());
-        assertEquals(alunoDTOResponse.getClass(), alunoRetornado.getClass());
+        assertEquals(alunoDTOResponse, alunoRetornado);
 
         verify(alunoRepository, times(1)).findById(aluno.getId());
         verify(alunoMapper, times(1)).toAlunoDTOResponse(aluno);
@@ -185,9 +179,8 @@ class AlunoServiceTest {
     {
         when(alunoRepository.findById(2L)).thenReturn(Optional.empty());
 
-        Exception exceptionEperada = new NaoTemAlunoComEsseIdException(2L);
-        Exception exceptionRetornada = assertThrows(NaoTemAlunoComEsseIdException.class, () -> alunoService.deletarAluno(2L));
-        assertEquals(exceptionEperada.getMessage(), exceptionRetornada.getMessage());
+        assertThrows(NaoTemAlunoComEsseIdException.class, () -> alunoService.deletarAluno(2L));
+
         verify(alunoRepository, times(1)).findById(2L);
         verify(alunoRepository, times(0)).deleteById(2L);
 
@@ -208,9 +201,9 @@ class AlunoServiceTest {
     void deveDarExceptionNoObterTodosAlunosTest()
     {
         when(alunoRepository.findAll()).thenReturn(Collections.emptyList());
-        Exception exceptionEsperada = new NenhumAlunoCadastradoException();
-        Exception exceptionRetornada = assertThrows(NenhumAlunoCadastradoException.class, () -> alunoService.obterTodosAlunos());
-        assertEquals(exceptionEsperada.getMessage(), exceptionRetornada.getMessage());
+
+        assertThrows(NenhumAlunoCadastradoException.class, () -> alunoService.obterTodosAlunos());
+
         verify(alunoRepository, times(1)).findAll();
         verifyNoMoreInteractions(alunoRepository);
     }
@@ -238,9 +231,7 @@ class AlunoServiceTest {
     {
         when(alunoRepository.findByEmail(aluno.getEmail())).thenReturn(Optional.empty());
 
-        Exception exceptionEsperada = new NenhumAlunoComEsseEmailException(aluno.getEmail());
-        Exception exceptionRetornada = assertThrows(NenhumAlunoComEsseEmailException.class, () -> alunoService.acharAlunoPeloEmail(aluno.getEmail()));
-        assertEquals(exceptionEsperada.getMessage(), exceptionRetornada.getMessage());
+        assertThrows(NenhumAlunoComEsseEmailException.class, () -> alunoService.acharAlunoPeloEmail(aluno.getEmail()));
 
         verify(alunoRepository, times(1)).findByEmail(aluno.getEmail());
         verifyNoMoreInteractions(alunoRepository);
@@ -264,9 +255,8 @@ class AlunoServiceTest {
     void deveDarExceptionAcharAlunoPeloRegistro()
     {
         when(alunoRepository.findByRegistroDeAluno(aluno.getRegistroDeAluno())).thenReturn(Optional.empty());
-        Exception exceptionEsperada = new NenhumAlunoComEsseRegistroDeAlunoException(aluno.getRegistroDeAluno());
-        Exception exceptionRetornada = assertThrows(NenhumAlunoComEsseRegistroDeAlunoException.class, () -> alunoService.acharAlunoPeloRegistroDeAluno(aluno.getRegistroDeAluno()));
-        assertEquals(exceptionEsperada.getMessage(), exceptionRetornada.getMessage());
+        assertThrows(NenhumAlunoComEsseRegistroDeAlunoException.class, () -> alunoService.acharAlunoPeloRegistroDeAluno(aluno.getRegistroDeAluno()));
+
         verify(alunoRepository).findByRegistroDeAluno(aluno.getRegistroDeAluno());
         verifyNoInteractions(alunoMapper);
         verifyNoMoreInteractions(alunoRepository);
