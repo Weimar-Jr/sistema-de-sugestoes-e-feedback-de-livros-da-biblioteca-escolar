@@ -6,7 +6,7 @@ public record AtualizarFeedbackDTORequest(
         @JsonProperty("comentario")
         String comentario,
         @JsonProperty("avaliacao")
-        Integer avaliacao,
+        Double avaliacao,
         @JsonProperty("nome_do_aluno_visivel")
         Boolean nomeDoAlunoVisivel
 )

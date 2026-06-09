@@ -75,7 +75,7 @@ public class FeedbackService {
     }
 
     public List<FeedbackDTOResponse> listarFeedbacksPorLivro(Long idLivro) {
-        List<FeedbackDTOResponse> feedbacks = feedbackRepository.findFeedbacksByLivroId(idLivro).stream().map(feedbackMapper::toFeedbackDTOResponse).collect(java.util.stream.Collectors.toList());
+        List<FeedbackDTOResponse> feedbacks = feedbackRepository.findFeedbacksByLivroId(idLivro).stream().map(feedbackMapper::toFeedbackDTOResponse).toList();
         if(feedbacks.isEmpty()) {
             throw new NenhumFeedbackDoLivroFaladoException(idLivro);
         }
@@ -83,7 +83,7 @@ public class FeedbackService {
 
     }
     public List<FeedbackDTOResponse> listarFeedbacksPorAluno(Long idAluno) {
-        List<FeedbackDTOResponse> feedbacks = feedbackRepository.findFeedbacksByAlunoId(idAluno).stream().map(feedbackMapper::toFeedbackDTOResponse).collect(java.util.stream.Collectors.toList());
+        List<FeedbackDTOResponse> feedbacks = feedbackRepository.findFeedbacksByAlunoId(idAluno).stream().map(feedbackMapper::toFeedbackDTOResponse).toList();
        if(feedbacks.isEmpty()) {
         throw new NenhumFeedbackDesseAlunoException(idAluno);
        }

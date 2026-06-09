@@ -10,7 +10,7 @@ public record CriarFeedbackDTORequest(
         @NotBlank @JsonProperty("comentario")
         String comentario,
         @NotNull @JsonProperty("avaliacao")
-        int avaliacao,
+        Double avaliacao,
         @NotNull @JsonProperty("nome_do_aluno_visivel")
         Boolean nomeDoAlunoVisivel,
         @JsonProperty("aluno_id")
