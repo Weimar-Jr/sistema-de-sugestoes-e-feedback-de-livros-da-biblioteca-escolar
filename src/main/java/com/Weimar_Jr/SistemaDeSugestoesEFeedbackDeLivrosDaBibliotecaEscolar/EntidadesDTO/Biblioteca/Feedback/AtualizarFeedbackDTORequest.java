@@ -9,6 +9,4 @@ public record AtualizarFeedbackDTORequest(
         Double avaliacao,
         @JsonProperty("nome_do_aluno_visivel")
         Boolean nomeDoAlunoVisivel
-)
-{
-}
+){ }

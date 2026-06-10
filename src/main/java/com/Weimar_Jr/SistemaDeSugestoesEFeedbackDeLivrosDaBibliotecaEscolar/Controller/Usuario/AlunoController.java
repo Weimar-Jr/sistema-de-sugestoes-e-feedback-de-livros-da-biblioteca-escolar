@@ -1,8 +1,10 @@
 package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Controller.Usuario;
 
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.AlunoDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.AtualizarAlunoDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.CriarUsuarioAlunoDTORequest;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Biblioteca.FeedbackService;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Services.Usuario.AlunoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import java.util.List;
 public class AlunoController {
 
     final AlunoService alunoService;
+    final FeedbackService feedbackService;
 
     @GetMapping("/{id}")
     public ResponseEntity<AlunoDTOResponse> obterAlunoPorId(@PathVariable Long id) {
@@ -34,9 +37,9 @@ public class AlunoController {
         return ResponseEntity.status(201).body(alunoDTOResponse);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> atualizarAluno(@PathVariable Long id, @RequestBody AtualizarAlunoDTORequest alunoDTO) {
-        alunoService.atualizarAluno(id, alunoDTO);
+    @PatchMapping("/atualizar")
+    public ResponseEntity<Void> atualizarAluno(@RequestBody AtualizarAlunoDTORequest alunoDTO) {
+        alunoService.atualizarAluno(alunoDTO);
         return ResponseEntity.noContent().build();
     }
 
@@ -49,5 +52,11 @@ public class AlunoController {
     @GetMapping("/aluno/{email}")
     public ResponseEntity<AlunoDTOResponse> acharAlunoPeloEmail(@PathVariable String email) {
         return ResponseEntity.ok(alunoService.acharAlunoPeloEmail(email));
+    }
+
+    @GetMapping("/meus-feedbacks")
+    public ResponseEntity<List<FeedbackDTOResponse>> meusFeedbacks() {
+        return ResponseEntity.ok(feedbackService.meusFeedbacksAluno());
+
     }
 }

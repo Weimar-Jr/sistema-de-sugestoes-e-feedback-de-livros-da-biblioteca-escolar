@@ -13,6 +13,8 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Exce
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NenhumAlunoCadastradoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,10 +46,11 @@ public class AlunoService {
         alunoRepository.save(aluno);
         return alunoMapper.toAlunoDTOResponse(aluno);
     }
-    public void atualizarAluno(Long id, AtualizarAlunoDTORequest alunoDTO) {
+    public void atualizarAluno(AtualizarAlunoDTORequest alunoDTO) {
 
-        Aluno aluno = acharAlunoPeloId(id);
+        Aluno aluno = getAlunoLogado();
         alunoMapper.toAlunoAtualizar(alunoDTO, aluno);
+        if(!alunoDTO.senha().isBlank())  aluno.setSenha(passwordEncoder.encode(alunoDTO.senha()));
         alunoRepository.save(aluno);
     }
 
@@ -85,5 +88,20 @@ public class AlunoService {
 
     public AlunoDTOResponse acharAlunoPeloEmail(String email) {
         return alunoMapper.toAlunoDTOResponse(alunoRepository.findByEmail(email).orElseThrow(() -> new NenhumAlunoComEsseEmailException(email)));
+    }
+
+    public Aluno getAlunoLogado()
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated())
+        {
+            throw new RuntimeException("Usuario não autenticado.");
+        }
+        Object principal = authentication.getPrincipal();
+        if(principal  instanceof  Aluno)
+        {
+            return (Aluno) principal;
+        }
+        throw new RuntimeException("Usuario logado não é  um Aluno");
     }
 }

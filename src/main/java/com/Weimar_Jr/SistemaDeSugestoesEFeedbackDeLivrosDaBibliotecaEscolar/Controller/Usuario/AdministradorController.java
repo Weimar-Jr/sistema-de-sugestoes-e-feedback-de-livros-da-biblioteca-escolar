@@ -39,9 +39,9 @@ public class AdministradorController {
         return ResponseEntity.status(201).body(administradorDTOResponse);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> atualizarAdministrador(@PathVariable Long id, @RequestBody  AtualizarAdministradorDTORequest administradorDTO) {
-        administradorService.atualizarAdministrador(id, administradorDTO);
+    @PatchMapping("/atualizar")
+    public ResponseEntity<Void> atualizarAdministrador( @RequestBody  AtualizarAdministradorDTORequest administradorDTO) {
+        administradorService.atualizarAdministrador(administradorDTO);
         return ResponseEntity.noContent().build();
     }
 

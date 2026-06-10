@@ -29,9 +29,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/aluno/cadastrar", "/admin/cadastrar").permitAll()
+                        .requestMatchers("/auth/**", "/aluno", "/admin").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll()
-                        .requestMatchers("swagger-ui/**", "/v3/api-docs/**", "/h2-console**").permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/livros").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/livros/{id}").hasRole("ADMIN")
@@ -41,15 +40,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/admin", "/aluno").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/admin/**", "/aluno/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/admin").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/admin/atualizar").hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.GET, "/feedbacks/por-aluno/{idAluno}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/feedbacks/por-aluno/{idAluno}").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/feedbacks/{id}").hasRole("ADMIN")
-                        .requestMatchers("/feedbacks/ocultar-nome-no-feedback/**", "/feedbacks/exibir-nome-no-feedback/**").hasRole("ADMIN")
+                        .requestMatchers("/feedbacks/ocultar-nome-no-feedback/**", "/feedbacks/exibir-nome-no-feedback/**").hasRole("ALUNO")
                         .requestMatchers(HttpMethod.PATCH, "/feedbacks/{id}").hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.PATCH, "/aluno/{id}").hasRole("ALUNO")
+                        .requestMatchers(HttpMethod.PATCH, "/aluno/atualizar").hasRole("ALUNO")
                         .requestMatchers(HttpMethod.POST, "/feedbacks").hasRole("ALUNO")
-                        .requestMatchers(HttpMethod.GET, "/feedbacks/meus-feedbacks").hasRole("ALUNO")
+                        .requestMatchers(HttpMethod.GET, "/aluno/meus-feedbacks").hasRole("ALUNO")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

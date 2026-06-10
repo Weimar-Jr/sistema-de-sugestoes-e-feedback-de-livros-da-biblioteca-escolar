@@ -12,6 +12,8 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Exce
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdministradorCadastradoExeption;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AdministradorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -48,9 +50,10 @@ public class AdministradorService {
                 .orElseThrow(() -> new NenhumAdminComEsseIDException(id));
     }
 
-    public void atualizarAdministrador(Long id, AtualizarAdministradorDTORequest administradorDTORequest) {
-        Administrador administradorExistente = acharAdministradorPorId(id);
+    public void atualizarAdministrador(AtualizarAdministradorDTORequest administradorDTORequest) {
+        Administrador administradorExistente = getAdminLogado();
         administradorMapper.toAdministradorAtualizar(administradorDTORequest, administradorExistente);
+        if(!administradorDTORequest.senha().isBlank()) administradorExistente.setSenha(passwordEncoder.encode(administradorDTORequest.senha()));
         administradorRepository.save(administradorExistente);
     }
 
@@ -80,6 +83,21 @@ public class AdministradorService {
     private  Boolean jaTemAdminComEsseEmail(String email)
     {
         return administradorRepository.findByEmail(email).isPresent();
+    }
+
+    public Administrador getAdminLogado()
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication == null || !authentication.isAuthenticated())
+        {
+            throw new RuntimeException("Usuario não autenticado");
+        }
+        Object principal = authentication.getPrincipal();
+        if(principal instanceof Administrador)
+        {
+            return (Administrador) principal;
+        }
+        throw new RuntimeException("Usuario logado não é administrador");
     }
 
 }

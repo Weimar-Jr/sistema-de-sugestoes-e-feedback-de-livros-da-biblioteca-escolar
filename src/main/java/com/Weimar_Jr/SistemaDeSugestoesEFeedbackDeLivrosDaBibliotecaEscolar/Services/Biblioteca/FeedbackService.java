@@ -32,7 +32,7 @@ public class FeedbackService {
     public FeedbackDTOResponse criarFeedback(CriarFeedbackDTORequest feedbackDTO) {
         Feedback feedback = feedbackMapper.toFeedback(feedbackDTO);
         Livro livro = livroService.acharLivroPorId(feedbackDTO.idLivro());
-        Aluno aluno = alunoService.acharAlunoPeloId(feedbackDTO.idAluno());
+        Aluno aluno = alunoService.getAlunoLogado();
         feedback.setLivro(livro);
         feedback.setAluno(aluno);
         livro.adicionarFeedback(feedback);
@@ -53,9 +53,16 @@ public class FeedbackService {
     @Transactional
     public void atualizarFeedback(Long id, AtualizarFeedbackDTORequest  feedbackDTO) {
         Feedback feedback = acharFeedbackPorId(id);
-        feedbackMapper.toFeedbackAtualizar(feedbackDTO, feedback);
-        feedbackRepository.save(feedback);
-        atualizarMediaAvaliacaoDoLivro(feedback.getLivro().getId());
+        Aluno aluno = alunoService.getAlunoLogado();
+        if(aluno.getId() == feedback.getAluno().getId())
+        {
+            feedbackMapper.toFeedbackAtualizar(feedbackDTO, feedback);
+            feedbackRepository.save(feedback);
+            atualizarMediaAvaliacaoDoLivro(feedback.getLivro().getId());
+        }
+        else{
+            throw new RuntimeException("Feedback mencionado não pertence ao aluno logado.");
+        }
     }
 
     public Feedback acharFeedbackPorId(Long id) {
@@ -96,4 +103,11 @@ public class FeedbackService {
         livro.setMediaAvaliacao(mediaAvaliacao);
         livroRepository.save(livro);
     }
+
+    public List<FeedbackDTOResponse> meusFeedbacksAluno()
+    {
+         Long IdAluno = alunoService.getAlunoLogado().getId();
+                 return listarFeedbacksPorAluno(IdAluno);
+    }
+
 }
