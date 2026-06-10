@@ -20,9 +20,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class AdministradorService {
-    private PasswordEncoder passwordEncoder;
-    final AdministradorRepository administradorRepository;
-    final AdministradorMapper administradorMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final AdministradorRepository administradorRepository;
+    private final AdministradorMapper administradorMapper;
 
     public AdministradorDTOResponse obterAdministradorPorId(Long id) {
         return administradorMapper.toAdministradorDTOResponse(acharAdministradorPorId(id));

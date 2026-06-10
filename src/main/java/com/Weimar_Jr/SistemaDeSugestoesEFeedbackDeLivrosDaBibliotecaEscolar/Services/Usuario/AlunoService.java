@@ -22,9 +22,9 @@ import java.util.List;
 @Service
 public class AlunoService {
 
-    private PasswordEncoder passwordEncoder;
-    final AlunoRepository alunoRepository;
-    final AlunoMapper alunoMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final AlunoRepository alunoRepository;
+    private final AlunoMapper alunoMapper;
 
     public AlunoDTOResponse obterAlunoPorId(Long id) {
         return alunoMapper.toAlunoDTOResponse(acharAlunoPeloId(id));
