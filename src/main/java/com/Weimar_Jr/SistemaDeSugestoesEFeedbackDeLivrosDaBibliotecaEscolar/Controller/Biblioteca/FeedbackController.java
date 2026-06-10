@@ -24,7 +24,7 @@ public class FeedbackController {
     public ResponseEntity<FeedbackDTOResponse> acharFeedbackPorId(@PathVariable Long id) {
         Feedback feedback = feedbackService.acharFeedbackPorId(id);
         FeedbackDTOResponse feedbackDTOResponse = feedbackMapper.toFeedbackDTOResponse(feedback);
-        return ResponseEntity.status(201).body(feedbackDTOResponse);
+        return ResponseEntity.ok(feedbackDTOResponse);
     }
 
     @GetMapping("/por-livro/{idLivro}")
