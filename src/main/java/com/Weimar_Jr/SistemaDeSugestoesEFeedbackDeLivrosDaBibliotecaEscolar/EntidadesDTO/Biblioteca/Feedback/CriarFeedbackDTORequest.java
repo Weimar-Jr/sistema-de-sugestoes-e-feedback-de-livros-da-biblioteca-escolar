@@ -13,9 +13,7 @@ public record CriarFeedbackDTORequest(
         Double avaliacao,
         @NotNull @JsonProperty("nome_do_aluno_visivel")
         Boolean nomeDoAlunoVisivel,
-        @JsonProperty("aluno_id")
-        Long idAluno,
-        @JsonProperty("livro_id")
+        @NotNull @JsonProperty("livro_id")
         Long idLivro
 
 ) {
