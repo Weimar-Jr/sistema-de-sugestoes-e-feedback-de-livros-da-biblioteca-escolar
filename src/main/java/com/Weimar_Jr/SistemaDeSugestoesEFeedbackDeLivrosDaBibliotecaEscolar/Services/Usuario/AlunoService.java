@@ -13,6 +13,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Exce
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NenhumAlunoCadastradoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 @Service
 public class AlunoService {
 
+    private PasswordEncoder passwordEncoder;
     final AlunoRepository alunoRepository;
     final AlunoMapper alunoMapper;
 
@@ -38,6 +40,7 @@ public class AlunoService {
         {
             throw new JaTemAlunoComEsseRegistroException();
         }
+        aluno.setSenha(passwordEncoder.encode(alunoDTO.senha()));
         alunoRepository.save(aluno);
         return alunoMapper.toAlunoDTOResponse(aluno);
     }

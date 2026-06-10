@@ -12,6 +12,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Exce
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdministradorCadastradoExeption;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AdministradorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class AdministradorService {
+    private PasswordEncoder passwordEncoder;
     final AdministradorRepository administradorRepository;
     final AdministradorMapper administradorMapper;
 
@@ -36,6 +38,7 @@ public class AdministradorService {
             throw new JaTemAdminComEsseEmailException(administradorDTORequest.email());
         }
         Administrador administrador = administradorMapper.toAdministrador(administradorDTORequest);
+        administrador.setSenha(passwordEncoder.encode(administradorDTORequest.senha()));
         administradorRepository.save(administrador);
         return administradorMapper.toAdministradorDTOResponse(administrador);
     }
