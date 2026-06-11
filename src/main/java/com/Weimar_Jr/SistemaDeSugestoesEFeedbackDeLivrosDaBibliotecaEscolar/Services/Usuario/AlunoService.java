@@ -10,7 +10,6 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Exce
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NenhumAlunoComEsseEmailException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NenhumAlunoComEsseRegistroDeAlunoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NaoTemAlunoComEsseIdException;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NenhumAlunoCadastradoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -69,11 +68,7 @@ public class AlunoService {
     }
 
     public List<AlunoDTOResponse> obterTodosAlunos() {
-        List<AlunoDTOResponse> alunosDTO = alunoRepository.findAll().stream().map(alunoMapper::toAlunoDTOResponse).toList();
-        if (alunosDTO.isEmpty()) {
-            throw new NenhumAlunoCadastradoException();
-        }
-        return alunosDTO;
+        return alunoRepository.findAll().stream().map(alunoMapper::toAlunoDTOResponse).toList();
     }
 
     public AlunoDTOResponse acharAlunoPeloRegistroDeAluno(String registroDeAluno) {

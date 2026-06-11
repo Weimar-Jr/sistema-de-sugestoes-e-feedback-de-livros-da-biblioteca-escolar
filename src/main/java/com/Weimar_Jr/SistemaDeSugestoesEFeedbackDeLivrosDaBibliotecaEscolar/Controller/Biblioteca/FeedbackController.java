@@ -40,13 +40,15 @@ public class FeedbackController {
     @PatchMapping("/meus-feedbacks/{id}")
     public ResponseEntity<Void> atualizarMeuFeedback(
             @PathVariable Long id,
-            @RequestBody AtualizarFeedbackDTORequest dto) {
+            @RequestBody @Valid AtualizarFeedbackDTORequest dto) {
         feedbackService.atualizarFeedback(id, dto);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/editar-feedback/{id}")
-    public ResponseEntity<Void> editarFeedbackAdmin(@PathVariable Long id, @RequestBody AtualizarFeedbackDTORequest dto){
+    public ResponseEntity<Void> editarFeedbackAdmin(
+            @PathVariable Long id,
+            @RequestBody @Valid AtualizarFeedbackDTORequest dto){
         feedbackService.atualizarFeedbackAdmin(id, dto);
         return  ResponseEntity.noContent().build();
     }

@@ -9,7 +9,6 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Exce
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.ExceptionDeNegocio.JaTemAdminComEsseEmailException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdminComEsseCpfException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdminComEsseIDException;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AdministradorException.NenhumAdministradorCadastradoExeption;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AdministradorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -62,13 +61,9 @@ public class AdministradorService {
     }
 
     public List<AdministradorDTOResponse> obterTodosAdministradores() {
-        List<AdministradorDTOResponse> administradores = administradorRepository.findAll().stream()
+        return administradorRepository.findAll().stream()
                 .map(administradorMapper::toAdministradorDTOResponse)
                 .toList();
-        if (administradores.isEmpty()) {
-            throw new NenhumAdministradorCadastradoExeption();
-        }
-        return administradores;
     }
 
     public AdministradorDTOResponse obterAdministradorPorCpf(String cpf) {

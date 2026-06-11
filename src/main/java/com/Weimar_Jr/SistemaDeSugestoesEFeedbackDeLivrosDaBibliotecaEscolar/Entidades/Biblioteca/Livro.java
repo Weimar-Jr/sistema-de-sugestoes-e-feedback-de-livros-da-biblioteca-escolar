@@ -42,7 +42,7 @@ public class Livro {
     private Double mediaAvaliacao;
 
     @Column(name = "livro_emprestado_id")
-    @OneToOne(mappedBy = "livroEmprestado", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "livroEmprestado")
     private Aluno alunoEmprestado;
     @OneToMany(mappedBy = "livro")
     private List<Feedback> feedbacks = new ArrayList<>();

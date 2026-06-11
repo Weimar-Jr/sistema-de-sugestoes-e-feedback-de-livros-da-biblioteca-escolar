@@ -27,7 +27,7 @@ public class SecurityConfig {
 
     String admin = Role.ROLE_ADMIN.toString();
     String aluno = Role.ROLE_ALUNO.toString();
-    
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
