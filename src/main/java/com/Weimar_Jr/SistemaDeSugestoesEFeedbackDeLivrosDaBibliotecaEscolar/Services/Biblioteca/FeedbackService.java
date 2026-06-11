@@ -8,7 +8,6 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.FeedbackMapper;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.FeedbackException.NenhumFeedbackComEsseIdException;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.FeedbackException.NenhumFeedbackDesseAlunoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.FeedbackException.NenhumFeedbackDoLivroFaladoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.FeedbackRepository;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.LivroRepository;
@@ -92,19 +91,12 @@ public class FeedbackService {
     }
 
     public List<FeedbackDTOResponse> listarFeedbacksPorLivro(Long idLivro) {
-        List<FeedbackDTOResponse> feedbacks = feedbackRepository.findFeedbacksByLivroId(idLivro).stream().map(feedbackMapper::toFeedbackDTOResponse).toList();
-        if(feedbacks.isEmpty()) {
-            throw new NenhumFeedbackDoLivroFaladoException(idLivro);
-        }
-        return feedbacks;
-
+        return feedbackRepository.findFeedbacksByLivroId(idLivro).stream().map(feedbackMapper::toFeedbackDTOResponse).toList();
     }
     public List<FeedbackDTOResponse> listarFeedbacksPorAluno(Long idAluno) {
-        List<FeedbackDTOResponse> feedbacks = feedbackRepository.findFeedbacksByAlunoId(idAluno).stream().map(feedbackMapper::toFeedbackDTOResponse).toList();
-       if(feedbacks.isEmpty()) {
-        throw new NenhumFeedbackDesseAlunoException(idAluno);
-       }
-        return feedbacks;
+
+        return feedbackRepository.findFeedbacksByAlunoId(idAluno).stream().map(feedbackMapper::toFeedbackDTOResponse).toList();
+
     }
 
 

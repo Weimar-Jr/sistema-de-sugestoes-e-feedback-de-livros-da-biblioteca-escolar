@@ -59,21 +59,18 @@ public class LivroService {
     public void emprestarLivro(Long idLivro, Long idAluno) {
         Livro livro = acharLivroPorId(idLivro);
         Aluno aluno = acharAlunoPeloId(idAluno);
-        if(aluno != null) {
-            if (livro.getDisponivel().equals(true)) {
-                if (aluno.getLivroEmprestado() != null) {
-                    throw new AlunoJaPossuiUmLivroEmprestadoException();
-                }
-                livro.setDisponivel(false);
-                livro.setAlunoEmprestado(aluno);
-                aluno.setLivroEmprestado(livro);
-                alunoRepository.save(aluno);
-                livroRepository.save(livro);
-            } else {
-                throw new LivroIndisponivelException(idLivro);
+
+        if (livro.getDisponivel().equals(true)) {
+            if (aluno.getLivroEmprestado() != null) {
+                throw new AlunoJaPossuiUmLivroEmprestadoException();
             }
-        }else{
-            throw new NaoTemAlunoComEsseIdException(idAluno);
+            livro.setDisponivel(false);
+            livro.setAlunoEmprestado(aluno);
+            aluno.setLivroEmprestado(livro);
+            alunoRepository.save(aluno);
+            livroRepository.save(livro);
+        } else {
+            throw new LivroIndisponivelException(idLivro);
         }
     }
     @Transactional
@@ -92,51 +89,27 @@ public class LivroService {
     }
 
     public List<LivroDTOResponse> listarLivros() {
-        List<LivroDTOResponse> livros = livroRepository.findAll().stream().map(livroMapper::toLivroDTOResponse).toList();
-        if(livros.isEmpty()) {
-            throw new NenhumLivroCadastradoException();
-        }
-        return livros;
+        return livroRepository.findAll().stream().map(livroMapper::toLivroDTOResponse).toList();
     }
 
     public List<LivroDTOResponse> listarLivrosDisponiveis() {
-        List<LivroDTOResponse> livros = livroRepository.findByDisponivel(true).stream().map(livroMapper::toLivroDTOResponse).toList();
-        if(livros.isEmpty()) {
-            throw new NenhumLivroDisponivelException();
-        }
-        return livros;
+        return livroRepository.findByDisponivel(true).stream().map(livroMapper::toLivroDTOResponse).toList();
     }
 
     public List<LivroDTOResponse> listarLivrosIndisponiveis() {
-        List<LivroDTOResponse> livros = livroRepository.findByDisponivel(false).stream().map(livroMapper::toLivroDTOResponse).toList();
-        if(livros.isEmpty()) {
-            throw new NenhumLivroIndisponivelException();
-        }
-        return livros;
+        return livroRepository.findByDisponivel(false).stream().map(livroMapper::toLivroDTOResponse).toList();
     }
 
     public List<LivroDTOResponse> listarLivrosPorGenero(String genero) {
-        List<LivroDTOResponse> livros = livroRepository.findByGenero(genero).stream().map(livroMapper::toLivroDTOResponse).toList();
-        if(livros.isEmpty()) {
-            throw new NenhumLivroDesseGeneroException(genero);
-        }
-        return livros;
+        return livroRepository.findByGenero(genero).stream().map(livroMapper::toLivroDTOResponse).toList();
     }
 
     public List<LivroDTOResponse> listarLivrosPorAutor(String autor) {
-        List<LivroDTOResponse> livros = livroRepository.findByAutor(autor).stream().map(livroMapper::toLivroDTOResponse).toList();
-        if(livros.isEmpty()) {
-            throw new NenhumLivroDesseAutorException(autor);
-        }
-        return livros;
+        return livroRepository.findByAutor(autor).stream().map(livroMapper::toLivroDTOResponse).toList();
     }
 
     public List<LivroDTOResponse> listarLivrosPorTitulo(String titulo) {
-        List<LivroDTOResponse> livros = livroRepository.findByTitulo(titulo).stream().map(livroMapper::toLivroDTOResponse).toList();
-        if(livros.isEmpty()) {
-            throw new NenhumLivroAchadoPelotituloFaladoException(titulo);
-        }
-        return livros;
+        return livroRepository.findByTitulo(titulo).stream().map(livroMapper::toLivroDTOResponse).toList();
     }
     private void verificarSeJaTemLivro(String autor, String titulo, String editora)
     {

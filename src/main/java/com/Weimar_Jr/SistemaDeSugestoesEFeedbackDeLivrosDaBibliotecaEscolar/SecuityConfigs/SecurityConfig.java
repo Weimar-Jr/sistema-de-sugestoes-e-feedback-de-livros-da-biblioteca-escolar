@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/admin").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/admin/atualizar").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/admin/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/admin/cpf/**", "/admin/email/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "/livros").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/livros/{id}").hasRole("ADMIN")
@@ -47,15 +48,16 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/feedbacks/por-aluno/{idAluno}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/feedbacks/{id}").hasRole("ADMIN")
-                        .requestMatchers("/feedbacks/ocultar-nome-no-feedback/**", "/feedbacks/exibir-nome-no-feedback/**").hasRole("ADMIN")
+                        .requestMatchers("/feedbacks/ocultar-nome-no-feedback/**",
+                                "/feedbacks/exibir-nome-no-feedback/**")
+                        .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/feedbacks/{id}").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.PATCH, "/aluno/atualizar").hasRole("ALUNO")
                         .requestMatchers(HttpMethod.POST, "/feedbacks").hasRole("ALUNO")
                         .requestMatchers(HttpMethod.GET, "/aluno/meus-feedbacks").hasRole("ALUNO")
 
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(filtroDeAutorizacaoJwt, UsernamePasswordAuthenticationFilter.class);
         return http.build();
