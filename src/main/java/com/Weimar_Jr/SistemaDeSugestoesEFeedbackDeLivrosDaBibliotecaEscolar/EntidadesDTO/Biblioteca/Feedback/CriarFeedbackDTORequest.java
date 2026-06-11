@@ -11,7 +11,7 @@ public record CriarFeedbackDTORequest(
         String comentario,
         @NotNull @JsonProperty("avaliacao")
         @DecimalMax(value = "5.0", message = "Avaliação deve ser no maximo 5")
-        @DecimalMin(value = "0.0", message = "Avaliaçãod eve ser no minimo 0")
+        @DecimalMin(value = "0.0", message = "Avaliação deve ser no minimo 0")
         Double avaliacao,
         @NotNull @JsonProperty("nome_do_aluno_visivel")
         Boolean nomeDoAlunoVisivel,
