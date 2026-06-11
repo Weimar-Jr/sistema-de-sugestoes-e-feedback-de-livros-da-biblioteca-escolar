@@ -25,8 +25,8 @@ public class SecurityConfig {
     private final FiltroDeAutorizacaoJwt filtroDeAutorizacaoJwt;
     private final UserDetailsService userDetailsService;
 
-    String admin = Role.ROLE_ADMIN.toString();
-    String aluno = Role.ROLE_ALUNO.toString();
+    String admin = "ADMIN";
+    String aluno = "ALUNO";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -60,8 +60,7 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.PATCH, "/aluno/atualizar").hasRole(admin)
                         .requestMatchers(HttpMethod.POST, "/feedbacks").hasRole(aluno)
-                        .requestMatchers(HttpMethod.PATCH, "/feeedbacks/meus-feedback/{id}").hasRole(aluno)
-                        .requestMatchers(HttpMethod.GET, "/aluno/meus-feedbacks").hasRole(aluno)
+                        .requestMatchers(HttpMethod.PATCH, "/feedbacks/meus-feedbacks/{id}").hasRole(aluno)                        .requestMatchers(HttpMethod.GET, "/aluno/meus-feedbacks").hasRole(aluno)
 
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())

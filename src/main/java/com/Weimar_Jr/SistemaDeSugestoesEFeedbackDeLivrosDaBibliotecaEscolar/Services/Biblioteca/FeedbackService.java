@@ -64,6 +64,7 @@ public class FeedbackService {
         }
     }
 
+    @Transactional
     public void atualizarFeedbackAdmin(Long id, AtualizarFeedbackDTORequest dto) {
         Feedback feedback = acharFeedbackPorId(id);
         feedbackMapper.toFeedbackAtualizar(dto, feedback);
