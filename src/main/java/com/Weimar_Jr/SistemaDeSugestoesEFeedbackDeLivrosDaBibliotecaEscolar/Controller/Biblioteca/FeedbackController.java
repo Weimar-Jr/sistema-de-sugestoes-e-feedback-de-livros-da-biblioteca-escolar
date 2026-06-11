@@ -1,6 +1,5 @@
 package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Controller.Biblioteca;
 
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Biblioteca.Feedback;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.AtualizarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.CriarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
@@ -22,9 +21,8 @@ public class FeedbackController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FeedbackDTOResponse> acharFeedbackPorId(@PathVariable Long id) {
-        Feedback feedback = feedbackService.acharFeedbackPorId(id);
-        FeedbackDTOResponse feedbackDTOResponse = feedbackMapper.toFeedbackDTOResponse(feedback);
-        return ResponseEntity.ok(feedbackDTOResponse);
+        FeedbackDTOResponse feedback = feedbackService.acharFeedbackDTOPorId(id);
+        return ResponseEntity.ok(feedback);
     }
 
     @GetMapping("/por-livro/{idLivro}")
@@ -59,7 +57,7 @@ public class FeedbackController {
         FeedbackDTOResponse feedbackDTOResponse = feedbackService.criarFeedback(feedbackDTO);
         return ResponseEntity.status(201).body(feedbackDTOResponse);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarFeedback(@PathVariable Long id) {
         feedbackService.deletarFeedback(id);

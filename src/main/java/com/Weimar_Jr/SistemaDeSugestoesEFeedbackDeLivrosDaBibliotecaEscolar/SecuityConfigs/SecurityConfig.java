@@ -53,15 +53,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/feedbacks/por-aluno/{idAluno}").hasRole(admin)
                         .requestMatchers(HttpMethod.DELETE, "/feedbacks/{id}").hasRole(admin)
                         .requestMatchers(HttpMethod.PATCH, "/editar-feedback/{id}").hasRole(admin)
-                        .requestMatchers("/feedbacks/ocultar-nome-no-feedback/**",
-                                "/feedbacks/exibir-nome-no-feedback/**")
-                        .hasRole("ADMIN")
+                        .requestMatchers("/feedbacks/ocultar-nome-no-feedback/**", "/feedbacks/exibir-nome-no-feedback/**").hasRole(admin)
                         .requestMatchers(HttpMethod.PATCH, "/feedbacks/{id}").hasRole(admin)
 
                         .requestMatchers(HttpMethod.PATCH, "/aluno/atualizar").hasRole(aluno)
                         .requestMatchers(HttpMethod.POST, "/feedbacks").hasRole(aluno)
-                        .requestMatchers(HttpMethod.PATCH, "/feedbacks/meus-feedbacks/{id}").hasRole(aluno)                        .requestMatchers(HttpMethod.GET, "/aluno/meus-feedbacks").hasRole(aluno)
-
+                        .requestMatchers(HttpMethod.PATCH, "/feedbacks/meus-feedbacks/{id}").hasRole(aluno)
+                        .requestMatchers(HttpMethod.GET, "/aluno/meus-feedbacks").hasRole(aluno)
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(filtroDeAutorizacaoJwt, UsernamePasswordAuthenticationFilter.class);

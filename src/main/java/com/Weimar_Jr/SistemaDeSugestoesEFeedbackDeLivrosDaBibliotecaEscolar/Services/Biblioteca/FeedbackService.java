@@ -111,4 +111,9 @@ public class FeedbackService {
                  return listarFeedbacksPorAluno(IdAluno);
     }
 
+    public FeedbackDTOResponse acharFeedbackDTOPorId(Long id)
+    {
+        Feedback feedback = feedbackRepository.findByIdWithAssociations(id).orElseThrow(() -> new NenhumFeedbackComEsseIdException(id));
+       return  feedbackMapper.toFeedbackDTOResponse(feedback);
+    }
 }
