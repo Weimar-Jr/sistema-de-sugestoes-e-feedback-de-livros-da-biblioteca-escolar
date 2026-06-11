@@ -64,11 +64,8 @@ public class FeedbackService {
         }
     }
 
-    public void atualizarFeedback(Long id, AtualizarFeedbackDTORequest dto, Aluno alunoLogado) {
+    public void atualizarFeedbackAdmin(Long id, AtualizarFeedbackDTORequest dto) {
         Feedback feedback = acharFeedbackPorId(id);
-        if (!feedback.getAluno().getId().equals(alunoLogado.getId())) {
-            throw new RuntimeException("Você só pode editar seus próprios feedbacks");
-        }
         feedbackMapper.toFeedbackAtualizar(dto, feedback);
         feedbackRepository.save(feedback);
         atualizarMediaAvaliacaoDoLivro(feedback.getLivro().getId());

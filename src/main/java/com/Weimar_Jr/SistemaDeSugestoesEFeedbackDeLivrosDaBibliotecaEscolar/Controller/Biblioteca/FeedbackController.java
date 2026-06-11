@@ -1,7 +1,6 @@
 package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Controller.Biblioteca;
 
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Biblioteca.Feedback;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Usuarios.Aluno;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.AtualizarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.CriarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
@@ -10,7 +9,6 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Serv
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,14 +37,20 @@ public class FeedbackController {
         return ResponseEntity.ok(feedbackService.listarFeedbacksPorAluno(idAluno));
     }
 
-    @PatchMapping("/aluno/meus-feedbacks/{id}")
+    @PatchMapping("/meus-feedbacks/{id}")
     public ResponseEntity<Void> atualizarMeuFeedback(
             @PathVariable Long id,
-            @RequestBody AtualizarFeedbackDTORequest dto,
-            @AuthenticationPrincipal Aluno alunoLogado) {
-        feedbackService.atualizarFeedback(id, dto, alunoLogado);
+            @RequestBody AtualizarFeedbackDTORequest dto) {
+        feedbackService.atualizarFeedback(id, dto);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/editar-feedback/{id}")
+    public ResponseEntity<Void> editarFeedbackAdmin(@PathVariable Long id, @RequestBody AtualizarFeedbackDTORequest dto){
+        feedbackService.atualizarFeedbackAdmin(id, dto);
+        return  ResponseEntity.noContent().build();
+    }
+
 
     @PostMapping
     public ResponseEntity<FeedbackDTOResponse> criarFeedback(@RequestBody @Valid CriarFeedbackDTORequest feedbackDTO) {

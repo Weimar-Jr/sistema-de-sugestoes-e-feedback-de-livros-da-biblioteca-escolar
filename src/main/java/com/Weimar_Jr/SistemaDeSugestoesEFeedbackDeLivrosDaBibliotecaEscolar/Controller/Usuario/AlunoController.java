@@ -58,7 +58,7 @@ public class AlunoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/aluno/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<AlunoDTOResponse> acharAlunoPeloEmail(@PathVariable String email) {
         return ResponseEntity.ok(alunoService.acharAlunoPeloEmail(email));
     }

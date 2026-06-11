@@ -25,6 +25,9 @@ public class SecurityConfig {
     private final FiltroDeAutorizacaoJwt filtroDeAutorizacaoJwt;
     private final UserDetailsService userDetailsService;
 
+    String admin = Role.ROLE_ADMIN.toString();
+    String aluno = Role.ROLE_ALUNO.toString();
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
@@ -34,28 +37,31 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/aluno").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/aluno").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/admin").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/admin/atualizar").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/admin/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/admin/cpf/**", "/admin/email/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/aluno").hasRole(admin)
+                        .requestMatchers(HttpMethod.GET, "/admin").hasRole(admin)
+                        .requestMatchers(HttpMethod.POST, "/admin").hasRole(admin)
+                        .requestMatchers(HttpMethod.PATCH, "/admin/atualizar").hasRole(admin)
+                        .requestMatchers(HttpMethod.DELETE, "/admin/**").hasRole(admin)
+                        .requestMatchers(HttpMethod.GET, "/admin/cpf/**", "/admin/email/**").hasRole(admin)
 
-                        .requestMatchers(HttpMethod.POST, "/livros").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/livros/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/livros/{id}").hasRole("ADMIN")
-                        .requestMatchers("/livros/emprestar-livro/**", "/livros/devolver-livro/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/livros").hasRole(admin)
+                        .requestMatchers(HttpMethod.PATCH, "/livros/{id}").hasRole(admin)
+                        .requestMatchers(HttpMethod.DELETE, "/livros/{id}").hasRole(admin)
+                        .requestMatchers("/livros/emprestar-livro/**", "/livros/devolver-livro/**").hasRole(admin)
+                        .requestMatchers(HttpMethod.GET, "/aluno/email/{email}").hasRole(admin)
 
-                        .requestMatchers(HttpMethod.GET, "/feedbacks/por-aluno/{idAluno}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/feedbacks/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/feedbacks/por-aluno/{idAluno}").hasRole(admin)
+                        .requestMatchers(HttpMethod.DELETE, "/feedbacks/{id}").hasRole(admin)
+                        .requestMatchers(HttpMethod.PATCH, "/editar-feedback/{id}").hasRole(admin)
                         .requestMatchers("/feedbacks/ocultar-nome-no-feedback/**",
                                 "/feedbacks/exibir-nome-no-feedback/**")
                         .hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, "/feedbacks/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/feedbacks/{id}").hasRole(admin)
 
-                        .requestMatchers(HttpMethod.PATCH, "/aluno/atualizar").hasRole("ALUNO")
-                        .requestMatchers(HttpMethod.POST, "/feedbacks").hasRole("ALUNO")
-                        .requestMatchers(HttpMethod.GET, "/aluno/meus-feedbacks").hasRole("ALUNO")
+                        .requestMatchers(HttpMethod.PATCH, "/aluno/atualizar").hasRole(admin)
+                        .requestMatchers(HttpMethod.POST, "/feedbacks").hasRole(aluno)
+                        .requestMatchers(HttpMethod.PATCH, "/feeedbacks/meus-feedback/{id}").hasRole(aluno)
+                        .requestMatchers(HttpMethod.GET, "/aluno/meus-feedbacks").hasRole(aluno)
 
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())

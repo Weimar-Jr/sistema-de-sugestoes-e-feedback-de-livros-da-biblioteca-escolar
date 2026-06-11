@@ -49,7 +49,7 @@ public class ClasseDeExcessoesGlobaisParaController {
 
     @ExceptionHandler({AlunoJaPossuiUmLivroEmprestadoException.class,
             LivroIndisponivelException.class,
-            LivroJaConstaComoNaoEmprestadoException.class, 
+            LivroJaConstaComoNaoEmprestadoException.class,
             NenhumAlunoComEsseRegistroDeAlunoException.class,
             JaTemAlunoComEsseEmailException.class,
             JaTemAlunoComEsseRegistroException.class,
