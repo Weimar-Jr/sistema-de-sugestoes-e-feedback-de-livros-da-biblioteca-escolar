@@ -59,13 +59,7 @@ public class FeedbackController {
         FeedbackDTOResponse feedbackDTOResponse = feedbackService.criarFeedback(feedbackDTO);
         return ResponseEntity.status(201).body(feedbackDTOResponse);
     }
-
-    @PatchMapping("/{id}")
-    public ResponseEntity<Void> atualizarFeedback(@PathVariable Long id, @RequestBody   AtualizarFeedbackDTORequest feedbackDTO) {
-        feedbackService.atualizarFeedback(id, feedbackDTO);
-        return ResponseEntity.noContent().build();
-    }
-
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarFeedback(@PathVariable Long id) {
         feedbackService.deletarFeedback(id);

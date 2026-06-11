@@ -11,6 +11,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Exce
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NenhumAlunoComEsseRegistroDeAlunoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NaoTemAlunoComEsseIdException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,6 +86,7 @@ public class AlunoService {
         return alunoMapper.toAlunoDTOResponse(alunoRepository.findByEmail(email).orElseThrow(() -> new NenhumAlunoComEsseEmailException(email)));
     }
 
+    @Transactional
     public Aluno getAlunoLogado()
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

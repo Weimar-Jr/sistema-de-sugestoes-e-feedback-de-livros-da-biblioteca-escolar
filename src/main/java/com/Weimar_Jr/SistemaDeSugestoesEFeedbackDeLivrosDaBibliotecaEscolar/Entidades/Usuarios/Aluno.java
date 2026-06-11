@@ -38,7 +38,6 @@ public class Aluno implements UserDetails {
 
     @OneToMany(mappedBy = "aluno")
     private List<Feedback> feedbacks = new ArrayList<>();
-    @Column(name = "livro_emprestado_id")
     @OneToOne
     private Livro livroEmprestado;
 

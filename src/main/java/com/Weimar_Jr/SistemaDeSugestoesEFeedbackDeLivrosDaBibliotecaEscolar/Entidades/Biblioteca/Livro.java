@@ -41,7 +41,6 @@ public class Livro {
     @Column(columnDefinition = "DOUBLE PRECISION DEFAULT 0.0", name = "media_avaliacao")
     private Double mediaAvaliacao;
 
-    @Column(name = "livro_emprestado_id")
     @OneToOne(mappedBy = "livroEmprestado")
     private Aluno alunoEmprestado;
     @OneToMany(mappedBy = "livro")

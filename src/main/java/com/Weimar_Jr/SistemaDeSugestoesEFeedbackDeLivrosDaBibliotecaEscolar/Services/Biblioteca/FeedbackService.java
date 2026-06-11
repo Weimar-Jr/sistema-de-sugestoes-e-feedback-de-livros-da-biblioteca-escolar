@@ -34,8 +34,6 @@ public class FeedbackService {
         Aluno aluno = alunoService.getAlunoLogado();
         feedback.setLivro(livro);
         feedback.setAluno(aluno);
-        livro.adicionarFeedback(feedback);
-        aluno.adiconarFeedback(feedback);
         feedbackRepository.save(feedback);
         atualizarMediaAvaliacaoDoLivro(feedbackDTO.idLivro());
         return feedbackMapper.toFeedbackDTOResponse(feedback);
@@ -51,7 +49,8 @@ public class FeedbackService {
 
     @Transactional
     public void atualizarFeedback(Long id, AtualizarFeedbackDTORequest  feedbackDTO) {
-        Feedback feedback = acharFeedbackPorId(id);
+        Feedback feedback = feedbackRepository.findByIdWithAssociations(id)
+                .orElseThrow(() -> new NenhumFeedbackComEsseIdException(id));
         Aluno aluno = alunoService.getAlunoLogado();
         if(aluno.getId() == feedback.getAluno().getId())
         {
@@ -66,7 +65,8 @@ public class FeedbackService {
 
     @Transactional
     public void atualizarFeedbackAdmin(Long id, AtualizarFeedbackDTORequest dto) {
-        Feedback feedback = acharFeedbackPorId(id);
+        Feedback feedback = feedbackRepository.findByIdWithAssociations(id)
+                .orElseThrow(() -> new NenhumFeedbackComEsseIdException(id));
         feedbackMapper.toFeedbackAtualizar(dto, feedback);
         feedbackRepository.save(feedback);
         atualizarMediaAvaliacaoDoLivro(feedback.getLivro().getId());

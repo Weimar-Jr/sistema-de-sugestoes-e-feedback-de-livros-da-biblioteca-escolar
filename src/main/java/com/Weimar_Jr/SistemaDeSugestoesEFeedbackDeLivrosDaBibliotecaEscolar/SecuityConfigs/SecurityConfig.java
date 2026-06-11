@@ -35,8 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/aluno").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll()
-
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v3/api-docs").permitAll()
                         .requestMatchers(HttpMethod.GET, "/aluno").hasRole(admin)
                         .requestMatchers(HttpMethod.GET, "/admin").hasRole(admin)
                         .requestMatchers(HttpMethod.POST, "/admin").hasRole(admin)
@@ -45,6 +44,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/admin/cpf/**", "/admin/email/**").hasRole(admin)
 
                         .requestMatchers(HttpMethod.POST, "/livros").hasRole(admin)
+                        .requestMatchers(HttpMethod.GET, "/livros").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/livros/{id}").hasRole(admin)
                         .requestMatchers(HttpMethod.DELETE, "/livros/{id}").hasRole(admin)
                         .requestMatchers("/livros/emprestar-livro/**", "/livros/devolver-livro/**").hasRole(admin)
@@ -58,7 +58,7 @@ public class SecurityConfig {
                         .hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/feedbacks/{id}").hasRole(admin)
 
-                        .requestMatchers(HttpMethod.PATCH, "/aluno/atualizar").hasRole(admin)
+                        .requestMatchers(HttpMethod.PATCH, "/aluno/atualizar").hasRole(aluno)
                         .requestMatchers(HttpMethod.POST, "/feedbacks").hasRole(aluno)
                         .requestMatchers(HttpMethod.PATCH, "/feedbacks/meus-feedbacks/{id}").hasRole(aluno)                        .requestMatchers(HttpMethod.GET, "/aluno/meus-feedbacks").hasRole(aluno)
 
