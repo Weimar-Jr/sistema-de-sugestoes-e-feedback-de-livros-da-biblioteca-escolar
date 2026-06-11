@@ -6,7 +6,6 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Enti
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.AtualizarLivroDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Livro.LivroDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Mapper.LivroMapper;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NaoTemAlunoComEsseIdException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.*;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.ExceptionsDeBusca.*;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Repository.AlunoRepository;
@@ -58,7 +57,7 @@ public class LivroService {
     @Transactional
     public void emprestarLivro(Long idLivro, Long idAluno) {
         Livro livro = acharLivroPorId(idLivro);
-        Aluno aluno = acharAlunoPeloId(idAluno);
+        Aluno aluno = alunoService.acharAlunoPeloId(idAluno);
 
         if (livro.getDisponivel().equals(true)) {
             if (aluno.getLivroEmprestado() != null) {
@@ -120,13 +119,4 @@ public class LivroService {
         }
     }
 
-    private Aluno acharAlunoPeloId(Long id)
-    {
-        Optional<Aluno> aluno = alunoRepository.findById(id);
-        if(aluno.isPresent())
-        {
-            return aluno.get();
-        }
-        throw new NaoTemAlunoComEsseIdException(id);
-    }
 }

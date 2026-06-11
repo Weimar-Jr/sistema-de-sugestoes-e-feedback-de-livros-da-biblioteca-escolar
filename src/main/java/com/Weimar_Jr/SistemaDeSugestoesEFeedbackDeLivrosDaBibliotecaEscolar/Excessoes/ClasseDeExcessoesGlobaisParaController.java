@@ -11,8 +11,6 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Exce
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NenhumAlunoComEsseRegistroDeAlunoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NaoTemAlunoComEsseIdException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.AlunoException.NenhumAlunoCadastradoException;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.FeedbackException.NenhumFeedbackDesseAlunoException;
-import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.FeedbackException.NenhumFeedbackDoLivroFaladoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.AlunoJaPossuiUmLivroEmprestadoException;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.ExceptionsDeBusca.*;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Excessoes.LivroException.JaTemLivroSemelhanteCadastradoExeption;
@@ -40,14 +38,6 @@ public class ClasseDeExcessoesGlobaisParaController {
             NaoTemAlunoComEsseIdException.class,
             LivroNaoEncontradoException.class,
             NenhumLivroCadastradoException.class,
-            NenhumLivroAchadoPelotituloFaladoException.class,
-            NenhumLivroDesseAutorException.class,
-            NenhumLivroDesseGeneroException.class,
-            NenhumLivroDisponivelException.class,
-            NenhumLivroIndisponivelException.class,
-            NenhumLivroIndisponivelException.class,
-            NenhumFeedbackDesseAlunoException.class,
-            NenhumFeedbackDoLivroFaladoException.class,
             NenhumAlunoComEsseEmailException.class,
             NenhumAlunoComEsseRegistroDeAlunoException.class,
             NenhumAdminComEsseCpfException.class
@@ -59,8 +49,7 @@ public class ClasseDeExcessoesGlobaisParaController {
 
     @ExceptionHandler({AlunoJaPossuiUmLivroEmprestadoException.class,
             LivroIndisponivelException.class,
-            LivroJaConstaComoNaoEmprestadoException.class,
-            JaTemAlunoComEsseEmailException.class,
+            LivroJaConstaComoNaoEmprestadoException.class, 
             NenhumAlunoComEsseRegistroDeAlunoException.class,
             JaTemAlunoComEsseEmailException.class,
             JaTemAlunoComEsseRegistroException.class,
