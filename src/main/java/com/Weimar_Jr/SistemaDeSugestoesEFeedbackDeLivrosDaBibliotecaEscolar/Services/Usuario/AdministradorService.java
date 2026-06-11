@@ -31,12 +31,10 @@ public class AdministradorService {
     }
 
     public AdministradorDTOResponse criarAdministrador(CriarUsuarioAdministradorDTORequest administradorDTORequest) {
-        if(jaTemAdminComEsseCpf(administradorDTORequest.cpf()))
-        {
+        if (jaTemAdminComEsseCpf(administradorDTORequest.cpf())) {
             throw new JaTemAdminComEsseCpfException(administradorDTORequest.cpf());
         }
-        if(jaTemAdminComEsseEmail(administradorDTORequest.email()))
-        {
+        if (jaTemAdminComEsseEmail(administradorDTORequest.email())) {
             throw new JaTemAdminComEsseEmailException(administradorDTORequest.email());
         }
         Administrador administrador = administradorMapper.toAdministrador(administradorDTORequest);
@@ -53,7 +51,8 @@ public class AdministradorService {
     public void atualizarAdministrador(AtualizarAdministradorDTORequest administradorDTORequest) {
         Administrador administradorExistente = getAdminLogado();
         administradorMapper.toAdministradorAtualizar(administradorDTORequest, administradorExistente);
-        if(!administradorDTORequest.senha().isBlank()) administradorExistente.setSenha(passwordEncoder.encode(administradorDTORequest.senha()));
+        if (!administradorDTORequest.senha().isBlank())
+            administradorExistente.setSenha(passwordEncoder.encode(administradorDTORequest.senha()));
         administradorRepository.save(administradorExistente);
     }
 
@@ -61,6 +60,7 @@ public class AdministradorService {
         Administrador administradorExistente = acharAdministradorPorId(id);
         administradorRepository.delete(administradorExistente);
     }
+
     public List<AdministradorDTOResponse> obterTodosAdministradores() {
         List<AdministradorDTOResponse> administradores = administradorRepository.findAll().stream()
                 .map(administradorMapper::toAdministradorDTOResponse)
@@ -70,31 +70,33 @@ public class AdministradorService {
         }
         return administradores;
     }
+
     public AdministradorDTOResponse obterAdministradorPorCpf(String cpf) {
         Administrador administrador = administradorRepository.findByCpf(cpf).orElseThrow(() -> new NenhumAdminComEsseCpfException(cpf));
         return administradorMapper.toAdministradorDTOResponse(administrador);
     }
 
-    private Boolean jaTemAdminComEsseCpf(String cpf)
-    {
+    public AdministradorDTOResponse obterAdministradorPorEmail(String email) {
+        Administrador admin = administradorRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Nenhum admin com esse email: " + email));
+        return administradorMapper.toAdministradorDTOResponse(admin);
+    }
+
+    private Boolean jaTemAdminComEsseCpf(String cpf) {
         return administradorRepository.findByCpf(cpf).isPresent();
     }
 
-    private  Boolean jaTemAdminComEsseEmail(String email)
-    {
+    private Boolean jaTemAdminComEsseEmail(String email) {
         return administradorRepository.findByEmail(email).isPresent();
     }
 
-    public Administrador getAdminLogado()
-    {
+    public Administrador getAdminLogado() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if(authentication == null || !authentication.isAuthenticated())
-        {
+        if (authentication == null || !authentication.isAuthenticated()) {
             throw new RuntimeException("Usuario não autenticado");
         }
         Object principal = authentication.getPrincipal();
-        if(principal instanceof Administrador)
-        {
+        if (principal instanceof Administrador) {
             return (Administrador) principal;
         }
         throw new RuntimeException("Usuario logado não é administrador");

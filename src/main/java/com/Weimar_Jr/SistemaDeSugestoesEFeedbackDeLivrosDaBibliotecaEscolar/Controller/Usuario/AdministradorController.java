@@ -28,9 +28,14 @@ public class AdministradorController {
         return ResponseEntity.ok(administradorService.obterTodosAdministradores());
     }
 
-    @GetMapping("/admin/{email}")
-    public ResponseEntity<AdministradorDTOResponse> obterAdminPeloCpf(@PathVariable String email) {
-        return ResponseEntity.ok(administradorService.obterAdministradorPorCpf(email));
+    @GetMapping("/cpf/{cpf}")
+    public ResponseEntity<AdministradorDTOResponse> obterAdminPeloCpf(@PathVariable String cpf) {
+        return ResponseEntity.ok(administradorService.obterAdministradorPorCpf(cpf));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<AdministradorDTOResponse> obterAdminPorEmail(@PathVariable String email) {
+        return ResponseEntity.ok(administradorService.obterAdministradorPorEmail(email));
     }
 
     @PostMapping
