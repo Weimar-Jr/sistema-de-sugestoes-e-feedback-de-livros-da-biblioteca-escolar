@@ -1,5 +1,6 @@
 package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Controller.Usuario;
 
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Usuarios.Aluno;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.AlunoDTOResponse;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.UsuariosDTO.Aluno.AtualizarAlunoDTORequest;
@@ -9,6 +10,9 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Serv
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +26,12 @@ public class AlunoController {
     final FeedbackService feedbackService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<AlunoDTOResponse> obterAlunoPorId(@PathVariable Long id) {
+    public ResponseEntity<AlunoDTOResponse> obterAlunoPorId(
+            @PathVariable Long id,
+            @AuthenticationPrincipal Aluno alunoLogado) {
+        if (!alunoLogado.getId().equals(id) && !isAdmin()) {
+            throw new RuntimeException("Você não tem permissão para ver outro aluno");
+        }
         return ResponseEntity.ok(alunoService.obterAlunoPorId(id));
     }
 
@@ -58,5 +67,11 @@ public class AlunoController {
     public ResponseEntity<List<FeedbackDTOResponse>> meusFeedbacks() {
         return ResponseEntity.ok(feedbackService.meusFeedbacksAluno());
 
+    }
+
+    private boolean isAdmin() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth != null && auth.getAuthorities().stream()
+                .anyMatch(g -> g.getAuthority().equals("ROLE_ADMIN"));
     }
 }

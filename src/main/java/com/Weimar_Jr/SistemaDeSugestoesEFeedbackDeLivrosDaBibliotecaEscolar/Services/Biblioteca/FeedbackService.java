@@ -65,6 +65,16 @@ public class FeedbackService {
         }
     }
 
+    public void atualizarFeedback(Long id, AtualizarFeedbackDTORequest dto, Aluno alunoLogado) {
+        Feedback feedback = acharFeedbackPorId(id);
+        if (!feedback.getAluno().getId().equals(alunoLogado.getId())) {
+            throw new RuntimeException("Você só pode editar seus próprios feedbacks");
+        }
+        feedbackMapper.toFeedbackAtualizar(dto, feedback);
+        feedbackRepository.save(feedback);
+        atualizarMediaAvaliacaoDoLivro(feedback.getLivro().getId());
+    }
+
     public Feedback acharFeedbackPorId(Long id) {
 
         return feedbackRepository.findById(id).orElseThrow(() -> new NenhumFeedbackComEsseIdException(id));
@@ -96,6 +106,7 @@ public class FeedbackService {
        }
         return feedbacks;
     }
+
 
     public void atualizarMediaAvaliacaoDoLivro(Long idLivro) {
         Double mediaAvaliacao = feedbackRepository.mediaAvaliacaoByLivroId(idLivro);

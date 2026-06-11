@@ -1,6 +1,7 @@
 package com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Controller.Biblioteca;
 
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Biblioteca.Feedback;
+import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Entidades.Usuarios.Aluno;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.AtualizarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.CriarFeedbackDTORequest;
 import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.EntidadesDTO.Biblioteca.Feedback.FeedbackDTOResponse;
@@ -9,6 +10,7 @@ import com.Weimar_Jr.SistemaDeSugestoesEFeedbackDeLivrosDaBibliotecaEscolar.Serv
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,6 +37,15 @@ public class FeedbackController {
     @GetMapping("/por-aluno/{idAluno}")
     public ResponseEntity<List<FeedbackDTOResponse>> acharFeedbacksPorAluno(@PathVariable Long idAluno) {
         return ResponseEntity.ok(feedbackService.listarFeedbacksPorAluno(idAluno));
+    }
+
+    @PatchMapping("/aluno/meus-feedbacks/{id}")
+    public ResponseEntity<Void> atualizarMeuFeedback(
+            @PathVariable Long id,
+            @RequestBody AtualizarFeedbackDTORequest dto,
+            @AuthenticationPrincipal Aluno alunoLogado) {
+        feedbackService.atualizarFeedback(id, dto, alunoLogado);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
